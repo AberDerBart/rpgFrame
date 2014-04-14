@@ -5,10 +5,10 @@
 #include "rpgFrame/map.h"
 #include "rpgFrame/mapParser.h"
 #include "rpgFrame/mainloop.h"
+#include "rpgFrame/character.h"
 
 int main(){
 	rpg_map* map;
-
 
 	if(rpg_init()){
 		return -1;
@@ -23,7 +23,14 @@ int main(){
 		return -1;
 	}
 
+	rpg_protagonist=rpg_createCharacter("img/char.png");
+	if(!rpg_protagonist){
+		return -2;
+	}
+
 	rpg_drawMap(map);
+
+	rpg_drawCharacter(rpg_protagonist);
 
 	rpg_mainloop();
 

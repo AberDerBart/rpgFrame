@@ -10,9 +10,17 @@ int rpg_mainloop(){
 	SDL_Event event;
 	rpg_keyList* tmp_key;
 
-	rpg_bindKey(SDLK_ESCAPE, &rpg_quit, { .v=NULL });
-	rpg_bindKey(SDLK_UP, &rpg_moveProtagonist, UP);
-
+	rpg_argument arg;
+	arg.p=NULL;
+	rpg_bindKey(SDLK_ESCAPE, &rpg_quit, arg);
+	arg.i=UP;
+	rpg_bindKey(SDLK_UP, &rpg_moveProtagonist, arg);
+	arg.i=DOWN;
+	rpg_bindKey(SDLK_DOWN, &rpg_moveProtagonist, arg);
+	arg.i=LEFT;
+	rpg_bindKey(SDLK_LEFT, &rpg_moveProtagonist, arg);
+	arg.i=RIGHT;
+	rpg_bindKey(SDLK_RIGHT, &rpg_moveProtagonist, arg);
 	quit=0;
 	tmp_key=&keyListStart;
 
@@ -37,7 +45,7 @@ int rpg_mainloop(){
 	return 0;
 }
 
-void rpg_quit(argument foo){
+void rpg_quit(void* foo){
 	quit=1;
 }
 

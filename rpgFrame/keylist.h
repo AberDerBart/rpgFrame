@@ -4,14 +4,14 @@
 #include <SDL2/SDL.h>
 
 typedef union{
-	void* v;
+	void* p;
 	int i;
-} argument;
+} rpg_argument;
 
 struct rpg_keyList{
 	SDL_Keycode key;
-	void (*function)(void*);
-	argument arg;
+	void (*function)(rpg_argument);
+	rpg_argument arg;
 	struct rpg_keyList* next;
 };
 
@@ -19,7 +19,7 @@ typedef struct rpg_keyList rpg_keyList;
 
 rpg_keyList keyListStart;
 
-void rpg_bindKey(SDL_Keycode, void (*)(),argument);
+void rpg_bindKey(SDL_Keycode, void (*)(),rpg_argument);
 
 void rpg_freeKeys();
 

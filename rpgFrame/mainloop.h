@@ -4,6 +4,6 @@
 #include "keylist.h"
 
 int rpg_mainloop();
-void rpg_quit(argument foo);
+void rpg_quit(void*);
 
 #endif

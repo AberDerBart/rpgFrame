@@ -1,6 +1,6 @@
 #include "keylist.h"
 
-void rpg_bindKey(SDL_Keycode key, void (*function)(),argument arg){
+void rpg_bindKey(SDL_Keycode key, void (*function)(),rpg_argument arg){
 	rpg_keyList* list;
 
 	list=&keyListStart;
