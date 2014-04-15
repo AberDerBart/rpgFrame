@@ -1,4 +1,3 @@
-#include "d12.h"
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include "rpgFrame/window.h"
