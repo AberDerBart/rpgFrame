@@ -10,12 +10,18 @@ typedef enum{
 	RIGHT
 } rpg_direction;
 
+typedef enum{
+	NORMAL,
+	MOVING
+} rpg_characterState;
+
 typedef struct{
 	int x;
 	int y;
 	int step_x;
 	int step_y;
 	SDL_Texture* texture;
+	rpg_characterState state;
 } rpg_character;
 
 rpg_character* rpg_protagonist;
@@ -26,7 +32,7 @@ void rpg_setProtagonst(rpg_character*);
 
 void rpg_drawCharacter(rpg_character*);
 
-void rpg_moveCharacter(rpg_character*, rpg_direction);
+int rpg_moveCharacter(rpg_character*, rpg_direction);
 
 void rpg_moveProtagonist(rpg_direction);
 

@@ -6,6 +6,8 @@
 typedef struct{
 	int height;
 	int width;
+	int off_x;
+	int off_y;
 	rpg_tile* tiles;
 } rpg_map; 
 

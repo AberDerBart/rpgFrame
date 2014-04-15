@@ -10,6 +10,8 @@ rpg_map* rpg_createMap(int w, int h){
 	map=malloc(sizeof(rpg_map));
 	map->height=h;
 	map->width=w;
+	map->off_x=0;
+	map->off_y=0;
 	map->tiles=malloc(w*h*sizeof(rpg_tile));
 
 	for(y=0;y<h;y++){
@@ -30,8 +32,8 @@ int rpg_drawMap(rpg_map* map){
 	rect.h=TILE_SIZE;
 	for(y=0;y<map->height;y++){
 		for(x=0;x<map->width;x++){
-			rect.x=x*TILE_SIZE;
-			rect.y=y*TILE_SIZE;
+			rect.x=x*TILE_SIZE-map->off_x;
+			rect.y=y*TILE_SIZE-map->off_y;
 			SDL_RenderCopy(render,map->tiles[map->width*y+x].texture,NULL,&rect);
 		}
 	}

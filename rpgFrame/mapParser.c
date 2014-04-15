@@ -56,7 +56,9 @@ rpg_map* rpg_parseMap(char* path){
 		fprintf(stderr,"Unable to load map file \"%s\": Wrong format\n",path);
 		return NULL;
 	}
+
 	map=rpg_createMap(surface->w,surface->h);
+
 	pixels=surface->pixels;
 
 	for(y=0;y<surface->h;y++){

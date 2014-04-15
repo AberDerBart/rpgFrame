@@ -7,7 +7,11 @@
 SDL_Window* win;
 SDL_Surface* winSurf;
 
+int width,height;
+
 int rpg_init(){
+	width=640;
+	height=480;
 	win=NULL;
 	winSurf=NULL;
 
@@ -16,7 +20,7 @@ int rpg_init(){
 		return -1;
 	}
 
-	win=SDL_CreateWindow("rpgFrame",SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_SHOWN);
+	win=SDL_CreateWindow("rpgFrame",SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width,height, SDL_WINDOW_SHOWN);
 	if(win==NULL){
 		fprintf(stderr,"Could not create SDL-window: %s\n",SDL_GetError());
 		return -1;
