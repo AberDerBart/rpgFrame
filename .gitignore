@@ -8,3 +8,4 @@ main.o
 *.swp
 rpgFrame/*.swp
 pokethulhu
+testmap/

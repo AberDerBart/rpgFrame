@@ -10,11 +10,12 @@ typedef enum{
 } collisionType;
 
 typedef struct{
-	SDL_Texture* texture;
+	SDL_Texture* texture_1;
+	SDL_Texture* texture_2;
 	collisionType collision;
 	int tileId;
 } rpg_tile;
 
-inline int rpg_loadTileTexture(rpg_tile*,int);
+inline int rpg_loadTileTexture(rpg_tile*,int,int);
 
 #endif

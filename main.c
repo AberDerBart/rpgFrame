@@ -19,7 +19,7 @@ int main(){
 		return -1;
 	}
 
-	scene.map=rpg_parseMap("testmap.png");
+	scene.map=rpg_parseMap("testmap");
 	scene.chars=list_create();
 
 	list_insert(scene.chars,rpg_createCharacter("img/char.png"));

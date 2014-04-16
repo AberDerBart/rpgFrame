@@ -15,7 +15,7 @@ rpg_map* rpg_createMap(int w, int h){
 
 	for(y=0;y<h;y++){
 		for(x=0;x<w;x++){
-			map->tiles[w*y+x].texture=NULL;
+			map->tiles[w*y+x].texture_1=NULL;
 			map->tiles[w*y+x].collision=NONE;
 			map->tiles[w*y+x].tileId=0;
 		}
@@ -33,7 +33,8 @@ int rpg_drawMap(rpg_map* map){
 		for(x=0;x<map->width;x++){
 			rect.x=x*TILE_SIZE-rpg_curScene->off_x;
 			rect.y=y*TILE_SIZE-rpg_curScene->off_y;
-			SDL_RenderCopy(render,map->tiles[map->width*y+x].texture,NULL,&rect);
+			SDL_RenderCopy(render,map->tiles[map->width*y+x].texture_1,NULL,&rect);
+			SDL_RenderCopy(render,map->tiles[map->width*y+x].texture_2,NULL,&rect);
 		}
 	}
 	return 0;
