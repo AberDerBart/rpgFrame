@@ -3,24 +3,22 @@
 #include <stdio.h>
 #include "globals.h"
 #include "mapParser.h"
+#include "window.h"
 
 SDL_Window* win;
-SDL_Surface* winSurf;
 
-int width,height;
 
 int rpg_init(){
-	width=640;
-	height=480;
+	rpg_width=640;
+	rpg_height=480;
 	win=NULL;
-	winSurf=NULL;
 
 	if(SDL_Init(SDL_INIT_VIDEO)<0){
 		fprintf(stderr,"Could not initialize SDL: %s\n",SDL_GetError());
 		return -1;
 	}
 
-	win=SDL_CreateWindow("rpgFrame",SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width,height, SDL_WINDOW_SHOWN);
+	win=SDL_CreateWindow("rpgFrame",SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, rpg_width,rpg_height, SDL_WINDOW_SHOWN);
 	if(win==NULL){
 		fprintf(stderr,"Could not create SDL-window: %s\n",SDL_GetError());
 		return -1;
@@ -37,7 +35,6 @@ int rpg_init(){
 		return -1;
 	}
 
-	//winSurf=SDL_GetWindowSurface(win);
 	return 0;
 }
 

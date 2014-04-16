@@ -1,14 +1,7 @@
 img/
-rpgFrame/.globals.h.swp
-rpgFrame/.map.c.swp
-rpgFrame/character.o
-rpgFrame/keylist.o
+rpgFrame/*.swp
+rpgFrame/*.o
 rpgFrame/librpgFrame.a
-rpgFrame/mainloop.o
-rpgFrame/map.o
-rpgFrame/mapParser.o
-rpgFrame/tile.o
-rpgFrame/window.o
 testmap.png
 tiles.txt
 main.o

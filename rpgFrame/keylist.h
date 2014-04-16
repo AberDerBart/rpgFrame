@@ -10,16 +10,18 @@ typedef union{
 
 struct rpg_keyList{
 	SDL_Keycode key;
-	void (*function)(rpg_argument);
-	rpg_argument arg;
+	void (*function)();
+	//rpg_argument arg;
 	struct rpg_keyList* next;
 };
+
+SDL_Keycode movementKeys[4];
 
 typedef struct rpg_keyList rpg_keyList;
 
 rpg_keyList keyListStart;
 
-void rpg_bindKey(SDL_Keycode, void (*)(),rpg_argument);
+void rpg_bindKey(SDL_Keycode, void (*)());
 
 void rpg_freeKeys();
 

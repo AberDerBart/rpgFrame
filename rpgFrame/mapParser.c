@@ -64,6 +64,7 @@ rpg_map* rpg_parseMap(char* path){
 	for(y=0;y<surface->h;y++){
 		for(x=0;x<surface->w;x++){
 			pixel=pixels[y*surface->w+x];
+			printf("Hex. %x\n",pixel);
 			tile=map->tiles+y*map->width+x;
 			tile->collision=(pixel & 0x00010000) >> 16;
 			tile->tileId=(pixel & 0x00003fff);

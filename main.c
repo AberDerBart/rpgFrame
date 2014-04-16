@@ -5,9 +5,11 @@
 #include "rpgFrame/mapParser.h"
 #include "rpgFrame/mainloop.h"
 #include "rpgFrame/character.h"
+#include "rpgFrame/scene.h"
+#include "rpgFrame/list.h"
 
 int main(){
-	rpg_map* map;
+	rpg_scene scene;
 
 	if(rpg_init()){
 		return -1;
@@ -17,19 +19,18 @@ int main(){
 		return -1;
 	}
 
-	map=rpg_parseMap("testmap.png");
-	if(!map){
-		return -1;
-	}
+	scene.map=rpg_parseMap("testmap.png");
+	scene.chars=list_create();
 
-	rpg_protagonist=rpg_createCharacter("img/char.png");
-	if(!rpg_protagonist){
-		return -2;
-	}
+	list_insert(scene.chars,rpg_createCharacter("img/char.png"));
+	rpg_protagonist=scene.chars->next->item;
+	scene.focus=rpg_protagonist;
+	rpg_curScene=&scene;
+	
+	rpg_protagonist->x=2;
+	rpg_protagonist->y=2;
 
-	rpg_drawMap(map);
-
-	rpg_drawCharacter(rpg_protagonist);
+	rpg_drawScene(&scene);
 
 	rpg_mainloop();
 

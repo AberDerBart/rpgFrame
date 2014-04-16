@@ -33,17 +33,25 @@ void rpg_drawCharacter(rpg_character* character){
 	SDL_Rect rect;
 	rect.w=TILE_SIZE;
 	rect.h=TILE_SIZE;
-	rect.x=character->x*TILE_SIZE+character->step_x;
-	rect.y=character->y*TILE_SIZE+character->step_y;
+	rect.x=character->x*TILE_SIZE+character->step_x-rpg_curScene->off_x;
+	rect.y=character->y*TILE_SIZE+character->step_y-rpg_curScene->off_y;
 	SDL_RenderCopy(render,character->texture,NULL,&rect);
-	SDL_RenderPresent(render);
 }
 	
 int rpg_moveCharacter(rpg_character* character, rpg_direction direction){
+	if(checkCollision(character,direction)!=NORMAL){
+		return 3;
+	}
 	movedObject* mObject;
 	genericList* list;
 
 	if(character->state==MOVING){
+		while(list->item!=character){
+			if(list->next==NULL){
+				return 2;
+			}
+			list=list->next;
+		}
 		return 1;
 	}
 
@@ -51,7 +59,7 @@ int rpg_moveCharacter(rpg_character* character, rpg_direction direction){
 
 	mObject->c=character;
 	mObject->dir=direction;
-	mObject->speed=1.;
+	mObject->speed=2.;
 	mObject->startTime=SDL_GetTicks();
 
 	list_insert(movedObjectsList,mObject);
@@ -64,4 +72,37 @@ void rpg_moveProtagonist(rpg_direction direction){
 	if(rpg_protagonist){
 		rpg_moveCharacter(rpg_protagonist, direction);
 	}
+}
+
+rpg_direction nextPlayerDir;
+
+void startMovement(rpg_direction dir){
+	nextPlayerDir=dir;
+}
+
+void stopMovement(rpg_direction dir){
+	if(dir==nextPlayerDir){
+		nextPlayerDir=D_NONE;
+	}
+}
+
+void updatePlayerMovement(){
+	if(rpg_protagonist){
+		if(nextPlayerDir!=NONE){
+			if(rpg_protagonist->state!=MOVING){
+				rpg_moveProtagonist(nextPlayerDir);
+			}
+		}
+	}
+}
+
+collisionType checkCollision(rpg_character* chara,rpg_direction dir){
+	rpg_tile* tile;
+
+	tile=rpg_getMapTile(rpg_curScene->map,chara->x,chara->y,dir);
+
+	if(tile){
+		return tile->collision;
+	}
+	return -1;
 }

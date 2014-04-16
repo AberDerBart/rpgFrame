@@ -15,4 +15,6 @@ void* list_removeItem(genericList*);
 
 genericList* list_create();
 
+void list_forEach(genericList*,void (*)(void*));
+
 #endif

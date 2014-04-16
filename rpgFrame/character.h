@@ -2,12 +2,14 @@
 #define CHARAKTER_H
 
 #include <SDL2/SDL.h>
+#include "tile.h"
 
 typedef enum{
-	UP,
-	DOWN,
-	LEFT,
-	RIGHT
+	D_NONE=0,
+	D_UP=1,
+	D_LEFT=2,
+	D_DOWN=3,
+	D_RIGHT=4
 } rpg_direction;
 
 typedef enum{
@@ -22,6 +24,7 @@ typedef struct{
 	int step_y;
 	SDL_Texture* texture;
 	rpg_characterState state;
+	rpg_direction dir;
 } rpg_character;
 
 rpg_character* rpg_protagonist;
@@ -35,5 +38,10 @@ void rpg_drawCharacter(rpg_character*);
 int rpg_moveCharacter(rpg_character*, rpg_direction);
 
 void rpg_moveProtagonist(rpg_direction);
+
+void startMovement(rpg_direction);
+void stopMovement(rpg_direction);
+void updatePlayerMovement();
+collisionType checkCollision(rpg_character*,rpg_direction);
 
 #endif

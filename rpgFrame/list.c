@@ -40,3 +40,12 @@ genericList* list_create(){
 	list->prev=NULL;
 	return list;
 }
+
+void list_forEach(genericList* list,void (*func)(void*)){
+	list=list->next;
+	while(list){
+		func(list->item);
+		list=list->next;
+	}
+}
+	

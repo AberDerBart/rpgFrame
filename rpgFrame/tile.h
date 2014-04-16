@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 
 typedef enum{
+	INVALID=-1,
 	NONE=0,
 	SOLID=1
 } collisionType;
