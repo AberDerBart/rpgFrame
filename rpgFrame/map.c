@@ -4,20 +4,24 @@
 #include <stdlib.h>
 #include "mainloop.h"
 
-rpg_map* rpg_createMap(int w, int h){
+rpg_map* rpg_createMap(int w, int h, int layers){
 	rpg_map* map;
-	int x,y;
+	int x,y,i;
 
 	map=malloc(sizeof(rpg_map));
 	map->height=h;
 	map->width=w;
+	map->layers=layers;
 	map->tiles=malloc(w*h*sizeof(rpg_tile));
 
 	for(y=0;y<h;y++){
 		for(x=0;x<w;x++){
-			map->tiles[w*y+x].texture_1=NULL;
 			map->tiles[w*y+x].collision=NONE;
 			map->tiles[w*y+x].tileId=0;
+			map->tiles[w*y+x].textures=malloc(layers*sizeof(SDL_Texture*));
+			for(i=0;i<layers;i++){
+				map->tiles[w*y+x].textures[i]=NULL;
+			}
 		}
 	}
 
@@ -25,7 +29,7 @@ rpg_map* rpg_createMap(int w, int h){
 }
 
 int rpg_drawMap(rpg_map* map){
-	int x,y;
+	int x,y,i;
 	SDL_Rect rect;
 	rect.w=TILE_SIZE;
 	rect.h=TILE_SIZE;
@@ -33,8 +37,9 @@ int rpg_drawMap(rpg_map* map){
 		for(x=0;x<map->width;x++){
 			rect.x=x*TILE_SIZE-rpg_curScene->off_x;
 			rect.y=y*TILE_SIZE-rpg_curScene->off_y;
-			SDL_RenderCopy(render,map->tiles[map->width*y+x].texture_1,NULL,&rect);
-			SDL_RenderCopy(render,map->tiles[map->width*y+x].texture_2,NULL,&rect);
+			for(i=0;i<map->layers;i++){
+				SDL_RenderCopy(render,map->tiles[map->width*y+x].textures[i],NULL,&rect);
+			}
 		}
 	}
 	return 0;

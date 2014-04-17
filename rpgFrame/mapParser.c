@@ -40,69 +40,48 @@ int rpg_setTiletable(char* tileTablePath){
 
 rpg_map* rpg_parseMap(char* path){
 	rpg_map* map;
-	char layer1path[512];
-	char layer2path[512];
-	SDL_Surface* surface_1;
-	SDL_Surface* surface_2;
-	int x,y;
-	Uint32* pixels1;
+	char layerPath[512];
+	SDL_Surface* surface;
+	int x,y,i;
+	Uint32* pixels;
 	Uint32 pixel;
-	Uint32* pixels2;
 	rpg_tile* tile;
 	int tileId;
+
+	//map=rpg_createMap(surface->w,surface->h,2);
+	map=rpg_createMap(5,5,2);
 	
-	sprintf(layer1path,"%s/layer1.png",path);
-	sprintf(layer2path,"%s/layer2.png",path);
+	for(i=0;i<2;i++){
+		sprintf(layerPath,"%s/layer%d.png",path,i+1);
 
-	//open map files
-	surface_1=IMG_Load(layer1path);
-	if(surface_1==NULL){
-		fprintf(stderr,"Unable to load map file \"%s\": %s\n",layer2path,IMG_GetError());
-		return NULL;
-	}
-	if(surface_1->format->BytesPerPixel!=4){
-		fprintf(stderr,"Unable to load map file \"%s\": Wrong format\n",layer2path);
-		return NULL;
-	}
-
-	surface_2=IMG_Load(layer2path);
-	if(surface_2==NULL){
-		fprintf(stderr,"Unable to load map file \"%s\": %s\n",layer2path,IMG_GetError());
-		return NULL;
-	}
-	if(surface_2->format->BytesPerPixel!=4){
-		fprintf(stderr,"Unable to load map file \"%s\": Wrong format\n",layer2path);
-		return NULL;
-	}
-	if(surface_1->h!= surface_2->h || surface_1->w!=surface_2->w){
-		fprintf(stderr,"Unable to load maps: Map files have different sizes");
-		return NULL;
-	}
-
-	map=rpg_createMap(surface_1->w,surface_1->h);
-
-	pixels1=surface_1->pixels;
-	pixels2=surface_2->pixels;
-
-	for(y=0;y<surface_1->h;y++){
-		for(x=0;x<surface_1->w;x++){
-			pixel=pixels1[y*surface_1->w+x];
-			//printf("Hex. %x\n",pixel);
-			tile=map->tiles+y*map->width+x;
-			tileId=(pixel & 0x00003fff);
-			tile->collision=(pixel & 0x00010000) >> 16;
-			rpg_loadTileTexture(tile,tileId,1);
-			
-			pixel=pixels2[y*surface_2->w+x];
-			tileId=(pixel & 0x00003fff);
-			rpg_loadTileTexture(tile,tileId,2);
-
-			
+		printf("Loading map file %s...",layerPath);
+		//open map files
+		surface=IMG_Load(layerPath);
+		if(surface==NULL){
+			fprintf(stderr,"\nUnable to load map file \"%s\": %s\n",layerPath,IMG_GetError());
+			return NULL;
 		}
+		if(surface->format->BytesPerPixel!=4){
+			fprintf(stderr,"\nUnable to load map file \"%s\": Wrong format\n",layerPath);
+			return NULL;
+		}
+
+		pixels=surface->pixels;
+		printf("done.\n");
+
+		for(y=0;y<surface->h;y++){
+			for(x=0;x<surface->w;x++){
+				pixel=pixels[y*surface->w+x];
+				//printf("Hex. %x\n",pixel);
+				tile=map->tiles+y*map->width+x;
+				tileId=(pixel & 0x00003fff);
+				tile->collision=(pixel & 0x00010000) >> 16;
+				rpg_loadTileTexture(tile,tileId,i);
+			}
+		}
+		SDL_FreeSurface(surface);
 	}
 
-	SDL_FreeSurface(surface_1);
-	SDL_FreeSurface(surface_2);
 
 	return map;
 }

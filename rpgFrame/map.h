@@ -7,10 +7,11 @@
 typedef struct{
 	int height;
 	int width;
+	int layers;
 	rpg_tile* tiles;
 } rpg_map; 
 
-inline rpg_map* rpg_createMap(int,int);
+inline rpg_map* rpg_createMap(int,int,int);
 
 inline int rpg_drawMap(rpg_map*);
 

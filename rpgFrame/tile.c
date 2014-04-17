@@ -10,11 +10,7 @@ int rpg_loadTileTexture(rpg_tile* tile,int tileID,int layer){
 		return -1;
 	}
 	if(tileID==0){
-		if(layer==1){
-			tile->texture_1=NULL;
-		}else if(layer==2){
-			tile->texture_2=NULL;
-		}
+		tile->textures[layer]=NULL;
 		return;
 	}
 	
@@ -32,13 +28,7 @@ int rpg_loadTileTexture(rpg_tile* tile,int tileID,int layer){
 		SDL_FreeSurface(surface);
 		printf("done.\n");
 	}
-	if(layer==1){
-		tile->texture_1=tileTextures[tileID];
-	}else if(layer==2){
-		tile->texture_2=tileTextures[tileID];
-	}else{
-		return -1;
-	}
 
+	tile->textures[layer]=tileTextures[tileID];
 	return 0;
 }
