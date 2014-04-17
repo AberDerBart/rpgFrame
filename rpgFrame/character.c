@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "mainloop.h"
 #include "list.h"
+#include <SDL2/SDL.h>
 
 rpg_character* rpg_createCharacter(char* texPath){
 	rpg_character* character;
@@ -24,6 +25,7 @@ rpg_character* rpg_createCharacter(char* texPath){
 	character->y=0;
 	character->step_x=0;
 	character->step_y=0;
+	character->sprite_frames=4;
 	character->state=NORMAL;
 
 	return character;
@@ -31,11 +33,16 @@ rpg_character* rpg_createCharacter(char* texPath){
 
 void rpg_drawCharacter(rpg_character* character){
 	SDL_Rect rect;
+	SDL_Rect texRect;
+	texRect.w=256/character->sprite_frames;
+	texRect.h=256/4;
+	texRect.x=0;
+	texRect.y=(character->dir-1)*texRect.w;
 	rect.w=TILE_SIZE;
 	rect.h=TILE_SIZE;
 	rect.x=character->x*TILE_SIZE+character->step_x-rpg_curScene->off_x;
 	rect.y=character->y*TILE_SIZE+character->step_y-rpg_curScene->off_y;
-	SDL_RenderCopy(render,character->texture,NULL,&rect);
+	SDL_RenderCopy(render,character->texture,&texRect,&rect);
 }
 	
 int rpg_moveCharacter(rpg_character* character, rpg_direction direction){
@@ -61,6 +68,7 @@ int rpg_moveCharacter(rpg_character* character, rpg_direction direction){
 	mObject->dir=direction;
 	mObject->speed=2.;
 	mObject->startTime=SDL_GetTicks();
+	character->dir=direction;
 
 	list_insert(movedObjectsList,mObject);
 	character->state=MOVING;
@@ -91,6 +99,7 @@ void updatePlayerMovement(){
 		if(nextPlayerDir!=NONE){
 			if(rpg_protagonist->state!=MOVING){
 				rpg_moveProtagonist(nextPlayerDir);
+				rpg_protagonist->dir=nextPlayerDir;
 			}
 		}
 	}

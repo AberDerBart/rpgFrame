@@ -28,7 +28,7 @@ int rpg_setTiletable(char* tileTablePath){
 	tileTypes=lines;
 	tileTextureFiles[0]=NULL;
 	tileTextures[0]=NULL;
-	for(i=1;i<=lines;i++){
+	for(i=1;i<=lines+1;i++){
 		fgets(buffer,512,tableFile);
 		buffer[strlen(buffer)-1]=0;
 		tileTextureFiles[i]=malloc((strlen(buffer)+1)*sizeof(char*));

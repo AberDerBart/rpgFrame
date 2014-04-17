@@ -22,7 +22,7 @@ int main(){
 	scene.map=rpg_parseMap("testmap");
 	scene.chars=list_create();
 
-	list_insert(scene.chars,rpg_createCharacter("img/char.png"));
+	list_insert(scene.chars,rpg_createCharacter("img/sprites/char.png"));
 	rpg_protagonist=scene.chars->next->item;
 	scene.focus=rpg_protagonist;
 	rpg_curScene=&scene;

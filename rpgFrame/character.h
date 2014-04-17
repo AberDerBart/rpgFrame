@@ -22,6 +22,7 @@ typedef struct{
 	int y;
 	int step_x;
 	int step_y;
+	int sprite_frames;
 	SDL_Texture* texture;
 	rpg_characterState state;
 	rpg_direction dir;

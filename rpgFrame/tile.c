@@ -5,7 +5,7 @@
 int rpg_loadTileTexture(rpg_tile* tile,int tileID,int layer){
 	SDL_Surface* surface;
 	char* path;
-	if(tileID>=tileTypes){
+	if(tileID>tileTypes){
 		fprintf(stderr,"Unable to load texture: invalid tile ID\n");
 		return -1;
 	}
