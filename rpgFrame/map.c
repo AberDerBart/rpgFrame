@@ -31,14 +31,23 @@ rpg_map* rpg_createMap(int w, int h, int layers){
 int rpg_drawMap(rpg_map* map){
 	int x,y,i;
 	SDL_Rect rect;
+	SDL_Rect texRect;
+	texRect.x=0;
+	texRect.y=0;
+	texRect.w=TILE_SIZE;
+	texRect.h=TILE_SIZE;
 	rect.w=TILE_SIZE;
 	rect.h=TILE_SIZE;
 	for(y=0;y<map->height;y++){
 		for(x=0;x<map->width;x++){
 			rect.x=x*TILE_SIZE-rpg_curScene->off_x;
 			rect.y=y*TILE_SIZE-rpg_curScene->off_y;
+			rect.h=TILE_SIZE;
+			rect.w=TILE_SIZE;
 			for(i=0;i<map->layers;i++){
-				SDL_RenderCopy(render,map->tiles[map->width*y+x].textures[i],NULL,&rect);
+				if(map->tiles[map->width*y+x].textures[i]){
+					SDL_RenderCopy(render,map->tiles[map->width*y+x].textures[i],&texRect,&rect);
+				}
 			}
 		}
 	}

@@ -24,13 +24,12 @@ int main(){
 
 	list_insert(scene.chars,rpg_createCharacter("img/sprites/char.png"));
 	rpg_protagonist=scene.chars->next->item;
+	list_insert(scene.chars,rpg_createCharacter("img/sprites/char.png"));
 	scene.focus=rpg_protagonist;
 	rpg_curScene=&scene;
 	
 	rpg_protagonist->x=2;
 	rpg_protagonist->y=2;
-
-	rpg_drawScene(&scene);
 
 	rpg_mainloop();
 
