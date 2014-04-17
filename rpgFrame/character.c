@@ -27,6 +27,7 @@ rpg_character* rpg_createCharacter(char* texPath){
 	character->step_y=0;
 	character->sprite_frames=4;
 	character->state=NORMAL;
+	character->dir=D_DOWN;
 
 	return character;
 }
@@ -36,7 +37,10 @@ void rpg_drawCharacter(rpg_character* character){
 	SDL_Rect texRect;
 	texRect.w=256/character->sprite_frames;
 	texRect.h=256/4;
-	texRect.x=0;
+	texRect.x=((character->step_x+character->step_y)/16)*64;
+	if(texRect.x<0){
+		texRect.x*=-1;
+	}
 	texRect.y=(character->dir-1)*texRect.w;
 	rect.w=TILE_SIZE;
 	rect.h=TILE_SIZE;
