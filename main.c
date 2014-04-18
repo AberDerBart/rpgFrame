@@ -7,9 +7,17 @@
 #include "rpgFrame/character.h"
 #include "rpgFrame/scene.h"
 #include "rpgFrame/list.h"
+#include "rpgFrame/events.h"
+
+void event_1(){
+	printf("hallo welt\n");
+}
 
 int main(){
 	rpg_scene scene;
+	rpg_events=malloc(2*sizeof(rpg_event));
+	rpg_eventCount=2;
+	rpg_events[1].standOn=&event_1;
 
 	if(rpg_init()){
 		return -1;

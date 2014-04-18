@@ -13,6 +13,7 @@ typedef struct{
 	SDL_Texture** textures;
 	collisionType collision;
 	int tileId;
+	int eventId;
 } rpg_tile;
 
 inline int rpg_loadTileTexture(rpg_tile*,int,int);

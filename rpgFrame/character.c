@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "mainloop.h"
 #include "list.h"
+#include "events.h"
 #include <SDL2/SDL.h>
 
 rpg_character* rpg_createCharacter(char* texPath){
@@ -100,8 +101,8 @@ void stopMovement(rpg_direction dir){
 
 void updatePlayerMovement(){
 	if(rpg_protagonist){
-		if(nextPlayerDir!=NONE){
-			if(rpg_protagonist->state!=MOVING){
+		if(rpg_protagonist->state!=MOVING){
+			if(nextPlayerDir!=NONE){
 				rpg_moveProtagonist(nextPlayerDir);
 				rpg_protagonist->dir=nextPlayerDir;
 			}

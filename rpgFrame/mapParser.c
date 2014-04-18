@@ -48,8 +48,33 @@ rpg_map* rpg_parseMap(char* path){
 	rpg_tile* tile;
 	int tileId;
 
-	//map=rpg_createMap(surface->w,surface->h,2);
-	map=rpg_createMap(5,5,2);
+	sprintf(layerPath,"%s/base.png",path);
+
+	printf("Loading event file %s...",layerPath);
+
+	surface=IMG_Load(layerPath);
+	if(surface==NULL){
+		fprintf(stderr,"\nUnable to load map file \"%s\": %s\n",layerPath,IMG_GetError());
+		return NULL;
+	}
+	if(surface->format->BytesPerPixel!=4){
+		 fprintf(stderr,"\nUnable to load map file \"%s\": Wrong format\n",layerPath);
+		 return NULL;
+	}
+	pixels=surface->pixels;
+
+	map=rpg_createMap(surface->w,surface->h,2);
+
+	for(y=0;y<surface->h;y++){
+		for(x=0;x<surface->w;x++){
+			pixel=pixels[y*surface->w+x];
+			tile=map->tiles+y*map->width+x;
+			tile->eventId=(pixel & 0x00ffffff);
+		}
+	}
+
+	printf("done.\n");
+
 	
 	for(i=0;i<2;i++){
 		sprintf(layerPath,"%s/layer%d.png",path,i+1);

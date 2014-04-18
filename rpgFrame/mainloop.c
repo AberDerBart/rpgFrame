@@ -4,6 +4,7 @@
 #include "keylist.h"
 #include "character.h"
 #include "globals.h"
+#include "events.h"
 
 int quit;
 
@@ -127,6 +128,9 @@ void moveObjects(){
 		if(moveObject(time,list->item)){
 			tmp=list;
 			list=list->next;
+			if(((movedObject*) tmp->item)->c==rpg_protagonist){
+				rpg_checkEvent_stand();
+			}
 			list_removeItem(tmp);
 		}else{
 			list=list->next;

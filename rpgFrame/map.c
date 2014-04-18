@@ -18,6 +18,7 @@ rpg_map* rpg_createMap(int w, int h, int layers){
 		for(x=0;x<w;x++){
 			map->tiles[w*y+x].collision=NONE;
 			map->tiles[w*y+x].tileId=0;
+			map->tiles[w*y+x].eventId=0;
 			map->tiles[w*y+x].textures=malloc(layers*sizeof(SDL_Texture*));
 			for(i=0;i<layers;i++){
 				map->tiles[w*y+x].textures[i]=NULL;
