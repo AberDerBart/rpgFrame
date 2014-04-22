@@ -69,7 +69,8 @@ rpg_map* rpg_parseMap(char* path){
 		for(x=0;x<surface->w;x++){
 			pixel=pixels[y*surface->w+x];
 			tile=map->tiles+y*map->width+x;
-			tile->eventId=(pixel & 0x00ffffff);
+			tile->eventId=(pixel & 0x0000ffff);
+			tile->collision=(pixel & 0x00ff0000) >> 16;
 		}
 	}
 
@@ -100,7 +101,6 @@ rpg_map* rpg_parseMap(char* path){
 				//printf("Hex. %x\n",pixel);
 				tile=map->tiles+y*map->width+x;
 				tileId=(pixel & 0x00003fff);
-				tile->collision=(pixel & 0x00010000) >> 16;
 				rpg_loadTileTexture(tile,tileId,i);
 			}
 		}
