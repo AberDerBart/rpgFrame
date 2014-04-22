@@ -1,4 +1,4 @@
-LINKFLAGS= -lSDL2 -lSDL2_image -L./rpgFrame/ -lrpgFrame
+LINKFLAGS= -lSDL2 -lSDL2_image -lSDL2_ttf -L./rpgFrame/ -lrpgFrame
 OBJS=main.o
 
 pokethulu: ${OBJS} rpgFrame/librpgFrame.a

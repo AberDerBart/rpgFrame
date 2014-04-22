@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include <stdio.h>
 #include "globals.h"
 #include "mapParser.h"
@@ -35,6 +36,11 @@ int rpg_init(){
 		return -1;
 	}
 
+	if(TTF_Init() == -1){
+		fprintf(stderr,"Could not initialize TTF: %s\n",SDL_GetError());
+		return -1;
+	}
+
 	return 0;
 }
 
@@ -46,6 +52,7 @@ int rpg_close(){
 	win=NULL;
 	render=NULL;
 
+	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
 
