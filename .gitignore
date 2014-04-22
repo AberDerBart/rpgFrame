@@ -9,3 +9,4 @@ main.o
 rpgFrame/*.swp
 pokethulhu
 testmap/
+rpgFrame/editor
