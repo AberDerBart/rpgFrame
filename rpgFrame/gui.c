@@ -3,6 +3,35 @@
 #include <SDL2/SDL_image.h>
 #include <stdlib.h>
 
+void rpg_guiSelect(){
+	if(currentGui){
+		if(currentGui->type==CHOICE){
+			currentGui->detail.choice.actions[currentGui->detail.choice.selectedAction].function();
+		}
+	}
+}
+
+void rpg_guiUp(){
+	if(currentGui){
+		if(currentGui->type==CHOICE){
+			if(currentGui->detail.choice.selectedAction>0){
+				currentGui->detail.choice.selectedAction--;
+			}
+			rpg_redrawGui(currentGui);
+		}
+	}
+}
+
+void rpg_guiDown(){
+	if(currentGui){
+		if(currentGui->type==CHOICE){
+			if(currentGui->detail.choice.selectedAction<currentGui->detail.choice.actionCount-1){
+				currentGui->detail.choice.selectedAction++;
+			}
+			rpg_redrawGui(currentGui);
+		}
+	}
+}
 
 void rpg_drawGui(){
 	SDL_Rect rect;

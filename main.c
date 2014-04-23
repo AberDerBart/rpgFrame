@@ -15,6 +15,11 @@ void event_1(){
 	printf("hallo welt\n");
 }
 
+void event_2(){
+	printf("blubb\n");
+	rpg_setGui(NULL);
+}
+
 int main(){
 	rpg_scene scene;
 	rpg_events=malloc(2*sizeof(rpg_event));
@@ -53,8 +58,13 @@ int main(){
 	actions[0].text="Mama";
 	actions[1].text="Blubb";
 	actions[2].text="Ball";
+	actions[0].function=&event_1;
+	actions[1].function=&event_2;
+	actions[2].function=&event_1;
 
 	rpg_setGui(rpg_createChoiceGui(guiStyle,actions,rect,3));
+
+	rpg_bindKey(SDLK_RETURN,&rpg_guiSelect);
 
 	rpg_mainloop();
 

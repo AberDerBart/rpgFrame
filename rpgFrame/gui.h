@@ -96,4 +96,8 @@ rpg_gui* rpg_createChoiceGui(rpg_guiStyle*,rpg_action*,SDL_Rect,int);
 rpg_gui* rpg_createTextGui(rpg_guiStyle*,char*,SDL_Rect);
 void rpg_redrawGui(rpg_gui*);
 
+void rpg_guiDown();
+void rpg_guiUp();
+void rpg_guiSelect();
+
 #endif

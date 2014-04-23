@@ -36,12 +36,12 @@ int rpg_mainloop(){
 			}
 			if(event.type==SDL_KEYDOWN){
 				tmp_key=&keyListStart;
-				while(tmp_key!=NULL){
-					for(i=1;i<5;i++){ 
-						if(event.key.keysym.sym==movementKeys[i-1]){
-							startMovement(i);
-						}
+				for(i=1;i<5;i++){ 
+					if(event.key.keysym.sym==movementKeys[i-1]){
+						startMovement(i);
 					}
+				}
+				while(tmp_key!=NULL){
 					if(event.key.keysym.sym==tmp_key->key){
 						tmp_key->function();
 						break;
@@ -127,6 +127,7 @@ void moveObjects(){
 	while(list){
 		if(moveObject(time,list->item)){
 			tmp=list;
+			//((movedObject*)tmp->item)->c->state=NORMAL;
 			list=list->next;
 			if(((movedObject*) tmp->item)->c==rpg_protagonist){
 				rpg_checkEvent_stand();

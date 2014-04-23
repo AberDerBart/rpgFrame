@@ -5,6 +5,7 @@
 #include "mainloop.h"
 #include "list.h"
 #include "events.h"
+#include "gui.h"
 #include <SDL2/SDL.h>
 
 rpg_character* rpg_createCharacter(char* texPath){
@@ -73,6 +74,7 @@ int rpg_moveCharacter(rpg_character* character, rpg_direction direction){
 	mObject->dir=direction;
 	mObject->speed=2.;
 	mObject->startTime=SDL_GetTicks();
+	mObject->nextDir=D_NONE;
 	character->dir=direction;
 
 	list_insert(movedObjectsList,mObject);
@@ -91,6 +93,12 @@ rpg_direction nextPlayerDir;
 
 void startMovement(rpg_direction dir){
 	nextPlayerDir=dir;
+	if(dir==D_DOWN){
+		rpg_guiDown();
+	}
+	if(dir==D_UP){
+		rpg_guiUp();
+	}
 }
 
 void stopMovement(rpg_direction dir){
