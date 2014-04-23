@@ -7,8 +7,7 @@
 
 SDL_Renderer* render;
 
-rpg_guiStyle* gui;
-rpg_guiTextStyle* tGui;
+rpg_guiStyle* guiStyle;
 
 int tileTypes;
 SDL_Texture** tileTextures;

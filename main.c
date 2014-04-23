@@ -8,6 +8,8 @@
 #include "rpgFrame/scene.h"
 #include "rpgFrame/list.h"
 #include "rpgFrame/events.h"
+#include "rpgFrame/gui.h"
+#include "rpgFrame/globals.h"
 
 void event_1(){
 	printf("hallo welt\n");
@@ -18,6 +20,8 @@ int main(){
 	rpg_events=malloc(2*sizeof(rpg_event));
 	rpg_eventCount=2;
 	rpg_events[1].standOn=&event_1;
+	rpg_action* actions;
+	SDL_Rect rect;
 
 	if(rpg_init()){
 		return -1;
@@ -38,6 +42,19 @@ int main(){
 	
 	rpg_protagonist->x=2;
 	rpg_protagonist->y=2;
+
+	rect.x=25;
+	rect.y=300;
+	rect.w=190;
+	rect.h=155;
+	guiStyle=rpg_loadGuiStyle("img/gui",STRETCH,"/usr/share/fonts/truetype/freefont/FreeSerif.ttf",20);
+
+	actions=malloc(3*sizeof(rpg_action));
+	actions[0].text="Mama";
+	actions[1].text="Blubb";
+	actions[2].text="Ball";
+
+	rpg_setGui(rpg_createChoiceGui(guiStyle,actions,rect,3));
 
 	rpg_mainloop();
 
