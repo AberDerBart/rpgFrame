@@ -45,6 +45,11 @@ typedef struct{
 	int selBTop;
 	int selBBottom;
 
+	int selBILeft;
+	int selBIBottom;
+	int selBITop;
+	int selBIRight;
+
 	TTF_Font* font;
 	SDL_Color textColor;
 } rpg_guiStyle;
@@ -61,6 +66,7 @@ typedef struct{
 typedef struct{
 	rpg_action* actions;
 	int actionCount;
+	int selectedAction;
 } rpg_guiChoice;
 
 typedef struct{
@@ -88,5 +94,6 @@ void rpg_freeGuiStyle(rpg_guiStyle*);
 SDL_Texture* rpg_createGuiBG(rpg_gui*);
 rpg_gui* rpg_createChoiceGui(rpg_guiStyle*,rpg_action*,SDL_Rect,int);
 rpg_gui* rpg_createTextGui(rpg_guiStyle*,char*,SDL_Rect);
+void rpg_redrawGui(rpg_gui*);
 
 #endif

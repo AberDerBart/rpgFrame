@@ -59,35 +59,66 @@ rpg_gui* rpg_createChoiceGui(rpg_guiStyle* style,rpg_action* actions,SDL_Rect re
 	gui->rect=rect;
 	gui->detail.choice.actions=actions;
 	gui->detail.choice.actionCount=actionCount;
+	gui->detail.choice.selectedAction=2;
 
 	gui->texture=rpg_createGuiBG(gui);
 
-	SDL_SetRenderTarget(render,gui->texture);
-
-	for(i=0;i<actionCount;i++){
-		gui->surface=TTF_RenderText_Solid(style->font,actions[i].text,style->textColor);
-		tex=SDL_CreateTextureFromSurface(render,gui->surface);
-		
-		drawRect.x=(rect.w-gui->surface->w)/2;
-		drawRect.y=rect.h/actionCount*(i+.5)-gui->surface->h/2;
-		drawRect.w=gui->surface->w;
-		drawRect.h=gui->surface->h;
-
-		SDL_RenderCopy(render,tex,NULL,&drawRect);
-		SDL_DestroyTexture(tex);
-	}
-
-	drawRect.x=10;
-	drawRect.y=10;
-	drawRect.w=gui->rect.w-20;
-	drawRect.h=gui->rect.h/actionCount-20;
+	rpg_redrawGui(gui);
 
 	rpg_drawGuiSelFrame(gui->style,drawRect);
 
-
-	SDL_SetRenderTarget(render,NULL);
-
 	return gui;
+}
+
+void rpg_redrawGui(rpg_gui* gui){
+	int i;
+	rpg_guiStyle* style;
+	SDL_Rect rect;
+	SDL_Texture* tex;
+	int actionCount;
+	int selectedAction;
+	rpg_action* actions;
+	SDL_Rect drawRect;
+
+	style=gui->style;
+	rect=gui->rect;
+
+
+	if(gui->texture){
+		SDL_DestroyTexture(gui->texture);
+	}
+	gui->texture=rpg_createGuiBG(gui);
+
+	if(gui->type==CHOICE){
+		actionCount=gui->detail.choice.actionCount;
+		selectedAction=gui->detail.choice.selectedAction;
+		actions=gui->detail.choice.actions;
+
+		SDL_SetRenderTarget(render,gui->texture);
+
+		for(i=0;i<actionCount;i++){
+			gui->surface=TTF_RenderText_Solid(style->font,actions[i].text,style->textColor);
+			tex=SDL_CreateTextureFromSurface(render,gui->surface);
+			
+			drawRect.x=(rect.w-gui->surface->w)/2;
+			drawRect.y=rect.h/actionCount*(i+.5)-gui->surface->h/2;
+			drawRect.w=gui->surface->w;
+			drawRect.h=gui->surface->h;
+
+			SDL_RenderCopy(render,tex,NULL,&drawRect);
+			SDL_DestroyTexture(tex);
+		}
+		
+		drawRect.x=style->selBILeft;
+		drawRect.y=style->selBITop+rect.h*selectedAction/actionCount;
+		drawRect.w=gui->rect.w-style->selBILeft-style->selBIRight;
+		drawRect.h=gui->rect.h/actionCount-style->selBITop-style->selBIBottom;
+
+		rpg_drawGuiSelFrame(style,drawRect);
+
+		SDL_SetRenderTarget(render,NULL);
+
+	}
 }
 
 SDL_Texture* rpg_createGuiBG(rpg_gui* gui){
@@ -383,6 +414,11 @@ rpg_guiStyle* rpg_loadGuiStyle(char* path,rpg_guiFormat format,char* font_name,i
 	style->selBRight=7;
 	style->selBTop=7;
 	style->selBBottom=7;
+	
+	style->selBILeft=10;
+	style->selBIRight=10;
+	style->selBITop=10;
+	style->selBIBottom=10;
 
 	return style;
 }
