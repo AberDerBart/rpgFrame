@@ -5,7 +5,8 @@
 
 typedef enum{
 	TEXT,
-	CHOICE
+	CHOICE,
+	BASIC
 } rpg_guiType;
 
 typedef enum{
@@ -94,6 +95,7 @@ void rpg_freeGuiStyle(rpg_guiStyle*);
 SDL_Texture* rpg_createGuiBG(rpg_gui*);
 rpg_gui* rpg_createChoiceGui(rpg_guiStyle*,rpg_action*,SDL_Rect,int);
 rpg_gui* rpg_createTextGui(rpg_guiStyle*,char*,SDL_Rect);
+rpg_gui* rpg_createBasicGui(rpg_guiStyle*,SDL_Rect);
 void rpg_redrawGui(rpg_gui*);
 
 void rpg_guiDown();

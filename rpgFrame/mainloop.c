@@ -144,6 +144,11 @@ void rpg_quit(){
 }
 
 void rpg_redraw(){
-	rpg_drawScene(rpg_curScene);
+	SDL_RenderClear(render);
+	if(rpg_curScene){
+		rpg_drawScene(rpg_curScene);
+	}		
+	rpg_drawGui();
+	SDL_RenderPresent(render);
 }
 

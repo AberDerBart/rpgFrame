@@ -93,12 +93,6 @@ rpg_direction nextPlayerDir;
 
 void startMovement(rpg_direction dir){
 	nextPlayerDir=dir;
-	if(dir==D_DOWN){
-		rpg_guiDown();
-	}
-	if(dir==D_UP){
-		rpg_guiUp();
-	}
 }
 
 void stopMovement(rpg_direction dir){

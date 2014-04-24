@@ -46,6 +46,18 @@ void rpg_setGui(rpg_gui* gui){
 	currentGui=gui;
 }
 
+rpg_gui* rpg_createBasicGui(rpg_guiStyle* style,SDL_Rect rect){
+	rpg_gui* gui;
+
+	gui=malloc(sizeof(rpg_gui));
+	gui->style=style;
+	gui->type=BASIC;
+	gui->rect=rect;
+	gui->texture=rpg_createGuiBG(gui);
+
+	return gui;
+}
+
 rpg_gui* rpg_createTextGui(rpg_guiStyle* style,char* text,SDL_Rect rect){
 	rpg_gui* gui;
 	SDL_Texture* tex;

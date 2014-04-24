@@ -30,7 +30,7 @@ int rpg_init(){
 		fprintf(stderr,"Could not initialize SDL-renderer: %s\n",SDL_GetError());
 		return -1;
 	}
-	SDL_SetRenderDrawColor(render,0xff,0xff,0xff,0xff);
+	SDL_SetRenderDrawColor(render,0x00,0x00,0x00,0x00);
 	if(!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)){
 		fprintf(stderr,"Could not initialize png loading: %s\n",SDL_GetError());
 		return -1;
