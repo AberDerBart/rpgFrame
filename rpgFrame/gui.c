@@ -53,6 +53,7 @@ rpg_gui* rpg_createBasicGui(rpg_guiStyle* style,SDL_Rect rect){
 	gui->style=style;
 	gui->type=BASIC;
 	gui->rect=rect;
+	gui->texture=NULL;
 	gui->texture=rpg_createGuiBG(gui);
 
 	return gui;
@@ -70,6 +71,7 @@ rpg_gui* rpg_createTextGui(rpg_guiStyle* style,char* text,SDL_Rect rect){
 	gui->detail.text.text=text;
 
 	gui->surface=TTF_RenderText_Solid(style->font,text,style->textColor);
+	gui->texture=NULL;
 	gui->texture=rpg_createGuiBG(gui);
 	
 	tex=SDL_CreateTextureFromSurface(render,gui->surface);
@@ -102,6 +104,7 @@ rpg_gui* rpg_createChoiceGui(rpg_guiStyle* style,rpg_action* actions,SDL_Rect re
 	gui->detail.choice.actionCount=actionCount;
 	gui->detail.choice.selectedAction=2;
 
+	gui->texture=NULL;
 	gui->texture=rpg_createGuiBG(gui);
 
 	rpg_redrawGui(gui);
@@ -124,10 +127,6 @@ void rpg_redrawGui(rpg_gui* gui){
 	style=gui->style;
 	rect=gui->rect;
 
-
-	if(gui->texture){
-		SDL_DestroyTexture(gui->texture);
-	}
 	gui->texture=rpg_createGuiBG(gui);
 
 	if(gui->type==CHOICE){
@@ -158,16 +157,18 @@ void rpg_redrawGui(rpg_gui* gui){
 		rpg_drawGuiSelFrame(style,drawRect);
 
 		SDL_SetRenderTarget(render,NULL);
-
 	}
 }
 
 SDL_Texture* rpg_createGuiBG(rpg_gui* gui){
 	SDL_Texture* tex;
 
-	tex=NULL;
-	tex=SDL_CreateTexture(render,SDL_PIXELFORMAT_RGBA8888,SDL_TEXTUREACCESS_TARGET, gui->rect.w,gui->rect.h);
-	
+	if(!gui->texture){
+		tex=NULL;
+		tex=SDL_CreateTexture(render,SDL_PIXELFORMAT_RGBA8888,SDL_TEXTUREACCESS_TARGET, gui->rect.w,gui->rect.h);
+	}else{
+		tex=gui->texture;
+	}
 	if(tex){
 		SDL_SetRenderTarget(render,tex);
 		if(gui->style->format==STRETCH){
@@ -175,7 +176,6 @@ SDL_Texture* rpg_createGuiBG(rpg_gui* gui){
 		}
 		SDL_SetRenderTarget(render,NULL);
 	}
-
 	return tex;
 }
 
