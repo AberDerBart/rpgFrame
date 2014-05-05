@@ -48,7 +48,7 @@ rpg_map* rpg_parseMap(char* path){
 	rpg_tile* tile;
 	int tileId;
 
-	sprintf(layerPath,"%s/base.png",path);
+	sprintf(layerPath,"%s/base.bmp",path);
 
 	printf("Loading event file %s...",layerPath);
 
@@ -63,7 +63,7 @@ rpg_map* rpg_parseMap(char* path){
 	}
 	pixels=surface->pixels;
 
-	map=rpg_createMap(surface->w,surface->h,2);
+	map=rpg_createMap(surface->w,surface->h,4);
 
 	for(y=0;y<surface->h;y++){
 		for(x=0;x<surface->w;x++){
@@ -77,8 +77,8 @@ rpg_map* rpg_parseMap(char* path){
 	printf("done.\n");
 
 	
-	for(i=0;i<2;i++){
-		sprintf(layerPath,"%s/layer%d.png",path,i+1);
+	for(i=0;i<4;i++){
+		sprintf(layerPath,"%s/layer%d.bmp",path,i);
 
 		printf("Loading map file %s...",layerPath);
 		//open map files

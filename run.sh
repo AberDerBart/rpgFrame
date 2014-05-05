@@ -14,6 +14,6 @@ else
 	then
 		LD_LIBRARY_PATH=/usr/local/lib/ valgrind -v ./pokethulhu
 	else
-		LD_LIBRARY_PATH=/usr/local/lib/ ./pokethulhu
+		LD_LIBRARY_PATH=/usr/local/lib/ ./pokethulhu $@
 	fi
 fi
