@@ -14,7 +14,7 @@ int rpg_loadTileTexture(rpg_tile* tile,int tileID,int layer){
 		return;
 	}
 	
-	if(tileTextures[tileID]==NULL){
+	if(tileTextures[tileID]->texture==NULL){
 		printf("loading texture #%d: %s... ",tileID,tileTextureFiles[tileID]);
 		path=tileTextureFiles[tileID];
 
@@ -24,11 +24,18 @@ int rpg_loadTileTexture(rpg_tile* tile,int tileID,int layer){
 			return -1;
 		}
 
-		tileTextures[tileID]=SDL_CreateTextureFromSurface(render,surface);
+		tileTextures[tileID]->texture=SDL_CreateTextureFromSurface(render,surface);
 		SDL_FreeSurface(surface);
 		printf("done.\n");
 	}
 
 	tile->textures[layer]=tileTextures[tileID];
 	return 0;
+}
+
+void rpg_freeTileTexture(rpg_tileTexture* tex){
+	if(tex->texture){
+		SDL_DestroyTexture(tex->texture);
+	}
+	//free(tex);
 }

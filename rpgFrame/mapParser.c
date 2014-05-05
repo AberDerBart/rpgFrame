@@ -11,6 +11,7 @@ int rpg_setTiletable(char* tileTablePath){
 	FILE* tableFile;
 	int i,lines;
 	char buffer[512];
+	char* fields[3];
 
 	//read tile Table
 	tableFile=fopen(tileTablePath,"r");
@@ -24,16 +25,42 @@ int rpg_setTiletable(char* tileTablePath){
 	}
 	rewind(tableFile);
 	tileTextureFiles=malloc((lines+1)*sizeof(char*));
-	tileTextures=malloc((lines+1)*sizeof(SDL_Texture*));
+	tileTextures=malloc((lines+1)*sizeof(rpg_tileTexture*));
 	tileTypes=lines;
 	tileTextureFiles[0]=NULL;
 	tileTextures[0]=NULL;
+
 	for(i=1;i<=lines+1;i++){
+		tileTextures[i]=malloc(sizeof(rpg_tileTexture));
+		tileTextures[i]->frameTime=0;
+		tileTextures[i]->frames=1;
+		tileTextures[i]->texture=NULL;
+
 		fgets(buffer,512,tableFile);
 		buffer[strlen(buffer)-1]=0;
+
+		fields[0]=buffer;
+		fields[1]=buffer;
+		while(*fields[1] && *fields[1]!='\t') fields[1]++;
+
+		if(*fields[1]){
+			*fields[1]=NULL;
+			fields[1]++;
+			fields[2]=fields[1];
+			
+			while(*fields[2] && *fields[2]!='\t') fields[2]++;
+
+			if(*fields[2]){
+				*fields[2]=NULL;
+				fields[2]++;
+				tileTextures[i]->frameTime=atoi(fields[2]);
+			}
+
+			tileTextures[i]->frames=atoi(fields[1]);
+		}
+
 		tileTextureFiles[i]=malloc((strlen(buffer)+1)*sizeof(char*));
 		strcpy(tileTextureFiles[i],buffer);
-		tileTextures[i]=NULL;
 	}
 	return 0;
 }
@@ -118,9 +145,9 @@ void rpg_freeTiletable(){
 			free(tileTextureFiles[i]);
 		}
 		if(tileTextures[i]){
-			SDL_DestroyTexture(tileTextures[i]);
+			rpg_freeTileTexture(tileTextures[i]);
 		}
 	}
-	free(tileTextureFiles);
-	free(tileTextures);
+	//free(tileTextureFiles);
+	//free(tileTextures);
 }

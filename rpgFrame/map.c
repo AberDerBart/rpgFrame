@@ -19,7 +19,7 @@ rpg_map* rpg_createMap(int w, int h, int layers){
 			map->tiles[w*y+x].collision=NONE;
 			map->tiles[w*y+x].tileId=0;
 			map->tiles[w*y+x].eventId=0;
-			map->tiles[w*y+x].textures=malloc(layers*sizeof(SDL_Texture*));
+			map->tiles[w*y+x].textures=malloc(layers*sizeof(rpg_tileTexture*));
 			for(i=0;i<layers;i++){
 				map->tiles[w*y+x].textures[i]=NULL;
 			}
@@ -31,6 +31,12 @@ rpg_map* rpg_createMap(int w, int h, int layers){
 
 int rpg_drawMap(rpg_map* map){
 	int x,y,i;
+	int frames;
+	int frameTime;
+	Uint32 curTime;
+
+	curTime=SDL_GetTicks();
+
 	SDL_Rect rect;
 	SDL_Rect texRect;
 	texRect.x=0;
@@ -47,7 +53,14 @@ int rpg_drawMap(rpg_map* map){
 			rect.w=TILE_SIZE;
 			for(i=0;i<map->layers;i++){
 				if(map->tiles[map->width*y+x].textures[i]){
-					SDL_RenderCopy(render,map->tiles[map->width*y+x].textures[i],&texRect,&rect);
+					frames=map->tiles[map->width*y+x].textures[i]->frames;
+					frameTime=map->tiles[map->width*y+x].textures[i]->frameTime;
+					if(frameTime){
+						texRect.x=TILE_SIZE*(curTime/frameTime%frames);
+					}else{
+						texRect.x=0;
+					}
+					SDL_RenderCopy(render,map->tiles[map->width*y+x].textures[i]->texture,&texRect,&rect);
 				}
 			}
 		}
