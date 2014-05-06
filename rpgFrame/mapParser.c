@@ -44,14 +44,14 @@ int rpg_setTiletable(char* tileTablePath){
 		while(*fields[1] && *fields[1]!='\t') fields[1]++;
 
 		if(*fields[1]){
-			*fields[1]=NULL;
+			*fields[1]='\0';
 			fields[1]++;
 			fields[2]=fields[1];
 			
 			while(*fields[2] && *fields[2]!='\t') fields[2]++;
 
 			if(*fields[2]){
-				*fields[2]=NULL;
+				*fields[2]='\0';
 				fields[2]++;
 				tileTextures[i]->frameTime=atoi(fields[2]);
 			}
