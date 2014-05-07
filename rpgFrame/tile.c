@@ -10,8 +10,8 @@ int rpg_loadTileTexture(rpg_tile* tile,int tileID,int layer){
 	SDL_Texture* tex;
 	SDL_PixelFormat format;
 	char* path;
-	int x,y;
-	int w,h;
+	int x,y,f;
+	int w,h,frames;
 	Uint32* rotPixels[4];
 
 	if(tileID>tileTypes){
@@ -52,17 +52,19 @@ int rpg_loadTileTexture(rpg_tile* tile,int tileID,int layer){
 		rotPixels[2]=surface[2]->pixels;
 		rotPixels[3]=surface[3]->pixels;
 	
-		w=tmpSurface->w;
+		frames=tileTextures[tileID]->frames;
+		w=tmpSurface->w/frames;
 		h=tmpSurface->h;
 
 		SDL_FreeSurface(tmpSurface);
 
-		if(w==h){
+		for(f=0;f<frames;f++){
 			for(y=0;y<h;y++){
 				for(x=0;x<w;x++){
-					rotPixels[1][x*w+w-y-1]=rotPixels[0][y*w+x];	
-					rotPixels[2][w*h-y*w-x-1]=rotPixels[0][y*w+x];
-					rotPixels[3][h*w-w+y-w*x]=rotPixels[0][y*w+x];
+					rotPixels[1][w-1 + x*w*frames - y  + f*w]=rotPixels[0][y*w*frames + x + f*w];
+					rotPixels[2][w*h*frames-frames*w+w-1 - y*w*frames - x + f*w]=rotPixels[0][y*w*frames + x + f*w];
+					//rotPixels[3][h*w - w+y - w*x + f*w]=rotPixels[0][y*w*frames + x + f*w];
+					rotPixels[3][w*h*frames-frames*w - x*w*frames + y +f*w]=rotPixels[0][y*w*frames + x + f*w];
 				}
 			}
 		}

@@ -91,18 +91,18 @@ if(currentGui==tilesGui){
 }
 
 void tilesLeft(){
-if(currentGui==tilesGui){
-	selectedTile--;
-	if(selectedTile<0){
-		selectedTile=tileTypes;
+	if(currentGui==tilesGui){
+		selectedTile--;
+		if(selectedTile<0){
+			selectedTile=tileTypes;
+		}
+		redrawTilesMenu();
 	}
-	redrawTilesMenu();
-}
 }	
 
 void tilesMenu(){
-redrawTilesMenu();
-rpg_setGui(tilesGui);
+	redrawTilesMenu();
+	rpg_setGui(tilesGui);
 }
 
 void setTile(){
@@ -133,10 +133,12 @@ void rotTile(){
 	tile=rpg_getMapTile(rpg_curScene->map,x,y,D_NONE);
 
 	rot=(tile->rot[selectedLayer]+1)%4;
-	printf("rot: %d\n",rot);
+	printf("rot: %x\n",(rot << 22) & 0x00c00000);
 
 	tile->rot[selectedLayer]=rot;
-	((Uint32*)layerSurfs[selectedLayer]->pixels)[x+w*y]|=(rot << 22);;
+	((Uint32*)layerSurfs[selectedLayer]->pixels)[x+w*y]&=0xff3fffff;
+	((Uint32*)layerSurfs[selectedLayer]->pixels)[x+w*y]|=(rot << 22);
+	printf("%x\n",((Uint32*)layerSurfs[selectedLayer]->pixels)[x+w*y]);
 }
 
 void save(){

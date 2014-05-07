@@ -72,26 +72,42 @@ rpg_map* rpg_parseMap(char* path){
 	rpg_map* map;
 	char layerPath[512];
 	SDL_Surface* surface;
+	SDL_Surface* tmpSurface;
 	int x,y,i;
 	Uint32* pixels;
 	Uint32 pixel;
 	rpg_tile* tile;
 	int tileId;
 	rpg_tileTextureRotation rot;
+	SDL_PixelFormat format;
 
 	sprintf(layerPath,"%s/base.bmp",path);
 
 	printf("Loading event file %s...",layerPath);
 
-	surface=IMG_Load(layerPath);
-	if(surface==NULL){
+	tmpSurface=IMG_Load(layerPath);
+	if(tmpSurface==NULL){
 		fprintf(stderr,"\nUnable to load map file \"%s\": %s\n",layerPath,IMG_GetError());
 		return NULL;
 	}
-	if(surface->format->BytesPerPixel!=4){
+	if(tmpSurface->format->BytesPerPixel!=4){
 		 fprintf(stderr,"\nUnable to load map file \"%s\": Wrong format\n",layerPath);
 		 return NULL;
 	}
+
+	format.format=SDL_PIXELFORMAT_ARGB8888;
+	format.palette=NULL;
+	format.BitsPerPixel=32;
+	format.BytesPerPixel=4;
+	format.Rmask=0x00ff0000;
+	format.Gmask=0x0000ff00;
+	format.Bmask=0x000000ff;
+	format.Amask=0xff000000;
+	
+	surface=SDL_ConvertSurface(tmpSurface,&format,0);
+
+	SDL_FreeSurface(tmpSurface);
+
 	pixels=surface->pixels;
 
 	map=rpg_createMap(surface->w,surface->h,4);
@@ -107,21 +123,24 @@ rpg_map* rpg_parseMap(char* path){
 
 	printf("done.\n");
 
-	
 	for(i=0;i<4;i++){
 		sprintf(layerPath,"%s/layer%d.bmp",path,i);
 
 		printf("Loading map file %s...",layerPath);
 		//open map files
-		surface=IMG_Load(layerPath);
-		if(surface==NULL){
+		tmpSurface=IMG_Load(layerPath);
+		if(tmpSurface==NULL){
 			fprintf(stderr,"\nUnable to load map file \"%s\": %s\n",layerPath,IMG_GetError());
 			return NULL;
 		}
-		if(surface->format->BytesPerPixel!=4){
+		if(tmpSurface->format->BytesPerPixel!=4){
 			fprintf(stderr,"\nUnable to load map file \"%s\": Wrong format\n",layerPath);
 			return NULL;
 		}
+
+		surface=SDL_ConvertSurface(tmpSurface,&format,0);
+
+		SDL_FreeSurface(tmpSurface);
 
 		pixels=surface->pixels;
 		printf("done.\n");
