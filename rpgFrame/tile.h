@@ -9,14 +9,22 @@ typedef enum{
 	SOLID=1
 } collisionType;
 
+typedef enum{
+	R0=0,
+	R90=1,
+	R180=2,
+	r270=3
+} rpg_tileTextureRotation;
+
 typedef struct{
-	SDL_Texture* texture;
+	SDL_Texture* texture[4];
 	int frames;
 	int frameTime;
 } rpg_tileTexture;
 
 typedef struct{
 	rpg_tileTexture** textures;
+	rpg_tileTextureRotation* rot;
 	collisionType collision;
 	int tileId;
 	int eventId;

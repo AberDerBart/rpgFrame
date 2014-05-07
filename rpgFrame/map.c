@@ -20,8 +20,10 @@ rpg_map* rpg_createMap(int w, int h, int layers){
 			map->tiles[w*y+x].tileId=0;
 			map->tiles[w*y+x].eventId=0;
 			map->tiles[w*y+x].textures=malloc(layers*sizeof(rpg_tileTexture*));
+			map->tiles[w*y+x].rot=malloc(layers*sizeof(rpg_tileTextureRotation));
 			for(i=0;i<layers;i++){
 				map->tiles[w*y+x].textures[i]=NULL;
+				map->tiles[w*y+x].rot[i]=R0;
 			}
 		}
 	}
@@ -60,7 +62,7 @@ int rpg_drawMap(rpg_map* map){
 					}else{
 						texRect.x=0;
 					}
-					SDL_RenderCopy(render,map->tiles[map->width*y+x].textures[i]->texture,&texRect,&rect);
+					SDL_RenderCopy(render,map->tiles[map->width*y+x].textures[i]->texture[map->tiles[map->width*y+x].rot[i]],&texRect,&rect);
 				}
 			}
 		}

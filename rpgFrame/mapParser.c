@@ -34,7 +34,10 @@ int rpg_setTiletable(char* tileTablePath){
 		tileTextures[i]=malloc(sizeof(rpg_tileTexture));
 		tileTextures[i]->frameTime=0;
 		tileTextures[i]->frames=1;
-		tileTextures[i]->texture=NULL;
+		tileTextures[i]->texture[0]=NULL;
+		tileTextures[i]->texture[1]=NULL;
+		tileTextures[i]->texture[2]=NULL;
+		tileTextures[i]->texture[3]=NULL;
 
 		fgets(buffer,512,tableFile);
 		buffer[strlen(buffer)-1]=0;
@@ -74,6 +77,7 @@ rpg_map* rpg_parseMap(char* path){
 	Uint32 pixel;
 	rpg_tile* tile;
 	int tileId;
+	rpg_tileTextureRotation rot;
 
 	sprintf(layerPath,"%s/base.bmp",path);
 
@@ -127,7 +131,9 @@ rpg_map* rpg_parseMap(char* path){
 				pixel=pixels[y*surface->w+x];
 				//printf("Hex. %x\n",pixel);
 				tile=map->tiles+y*map->width+x;
-				tileId=(pixel & 0x00003fff);
+				rot=((pixel & 0x00c00000) >> 22);
+				tile->rot[i]=rot;
+				tileId=(pixel & 0x003fffff);
 				rpg_loadTileTexture(tile,tileId,i);
 			}
 		}

@@ -39,42 +39,45 @@ rpg_setGui(layersGui);
 }
 
 void drawTilesMenu(){
-int i;
-SDL_Rect rect;
+	int i;
+	SDL_Rect rect;
 
-rect.w=32;
-rect.h=32;
+	rect.w=32;
+	rect.h=32;
 
-tilesGuiTexture=tilesGui->texture;
+	tilesGuiTexture=tilesGui->texture;
 
-SDL_SetRenderTarget(render,tilesGuiTexture);
+	SDL_SetRenderTarget(render,tilesGuiTexture);
 
-for(i=0;i<=tileTypes;i++){
-	rect.x=(i%8)*32;
-	rect.y=(i/8)*32;
-	SDL_RenderCopy(render,tileTextures[i],NULL,&rect);
-}
+	for(i=0;i<=tileTypes;i++){
+		rect.x=(i%8)*32;
+		rect.y=(i/8)*32;
+		if(tileTextures[i]){
+			SDL_RenderCopy(render,tileTextures[i]->texture[0],NULL,&rect);
+		}
+	}
 
-SDL_SetRenderTarget(render,NULL);
 
-tilesGui->texture=NULL;
-rpg_redrawGui(tilesGui);
+	SDL_SetRenderTarget(render,NULL);
+
+	tilesGui->texture=NULL;
+	rpg_redrawGui(tilesGui);
 }
 
 void redrawTilesMenu(){
-int i;
-SDL_Rect rect;
+	int i;
+	SDL_Rect rect;
 
-rect.w=32;
-rect.h=32;
+	rect.w=32;
+	rect.h=32;
 
-SDL_SetRenderTarget(render,tilesGui->texture);
+	SDL_SetRenderTarget(render,tilesGui->texture);
 
-SDL_RenderCopy(render,tilesGuiTexture,NULL,NULL);
-rect.x=(selectedTile%8)*32;
-rect.y=(selectedTile/8)*32;
-SDL_RenderDrawRect(render,&rect);
-SDL_SetRenderTarget(render,NULL);
+	SDL_RenderCopy(render,tilesGuiTexture,NULL,NULL);
+	rect.x=(selectedTile%8)*32;
+	rect.y=(selectedTile/8)*32;
+	SDL_RenderDrawRect(render,&rect);
+	SDL_SetRenderTarget(render,NULL);
 }
 
 void tilesRight(){
@@ -103,24 +106,48 @@ rpg_setGui(tilesGui);
 }
 
 void setTile(){
-rpg_tile* tile;
-int x,y;
-x=rpg_protagonist->x;
-y=rpg_protagonist->y;
-tile=rpg_getMapTile(rpg_curScene->map,x,y,D_NONE);
-rpg_loadTileTexture(tile,selectedTile,selectedLayer);
-((Uint32*)layerSurfs[selectedLayer]->pixels)[x+10*y]=selectedTile;
+	rpg_tile* tile;
+	int x,y;
+	int w;
+
+	w=rpg_curScene->map->width;
+
+	x=rpg_protagonist->x;
+	y=rpg_protagonist->y;
+	tile=rpg_getMapTile(rpg_curScene->map,x,y,D_NONE);
+	rpg_loadTileTexture(tile,selectedTile,selectedLayer);
+	tile->rot[selectedLayer]=0;
+	((Uint32*)layerSurfs[selectedLayer]->pixels)[x+w*y]=selectedTile|0xff000000;
+}
+
+void rotTile(){
+	rpg_tile* tile;
+	int x,y;
+	int w;
+	int rot;
+
+	x=rpg_protagonist->x;
+	y=rpg_protagonist->y;
+	w=rpg_curScene->map->width;
+
+	tile=rpg_getMapTile(rpg_curScene->map,x,y,D_NONE);
+
+	rot=(tile->rot[selectedLayer]+1)%4;
+	printf("rot: %d\n",rot);
+
+	tile->rot[selectedLayer]=rot;
+	((Uint32*)layerSurfs[selectedLayer]->pixels)[x+w*y]|=(rot << 22);;
 }
 
 void save(){
-int i;
-char path[256];
-for(i=0;i<4;i++){
-	sprintf(path,"layer%d.bmp",i);
-	SDL_SaveBMP(layerSurfs[i],path);
-}
-SDL_SaveBMP(baseSurf,"base.bmp");
-printf("saved.\n");
+	int i;
+	char path[256];
+	for(i=0;i<4;i++){
+		sprintf(path,"layer%d.bmp",i);
+		SDL_SaveBMP(layerSurfs[i],path);
+	}
+	SDL_SaveBMP(baseSurf,"base.bmp");
+	printf("saved.\n");
 }
 
 int main(int argc,char** argv){
@@ -168,16 +195,23 @@ int main(int argc,char** argv){
 	rpg_bindKey(SDLK_a,&tilesLeft);
 	rpg_bindKey(SDLK_d,&tilesRight);
 	rpg_bindKey(SDLK_SPACE,&setTile);
+	rpg_bindKey(SDLK_r,&rotTile);
 
 	rpg_bindKey(SDLK_o,&save);
 
 	if(argc==2){
 		scene.map=rpg_parseMap(argv[1]);
 		for(i=0;i<4;i++){
-			sprintf(path,"layer%d.bmp",i);
-			layerSurfs[i]=SDL_LoadBMP(path);
+			sprintf(path,"%s/layer%d.bmp",argv[1],i);
+			//layerSurfs[i]=SDL_LoadBMP(path);
+			layerSurfs[i]=IMG_Load(path);
+			if(layerSurfs[i]==NULL){
+				printf("layer%d\n",i);
+			}
 		}
-		baseSurf=SDL_LoadBMP(path);
+		//baseSurf=SDL_LoadBMP(path);
+		sprintf(path,"%s/base.bmp",argv[1]);
+		baseSurf=IMG_Load(path);
 	}else{
 		scene.map=rpg_createMap(10,10,3);
 		for(i=0;i<4;i++){
