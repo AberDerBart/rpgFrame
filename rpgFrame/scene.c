@@ -15,9 +15,12 @@ void rpg_drawScene(rpg_scene* scene){
 		scene->off_y=0;
 	}
 	rpg_drawMap(scene->map);
-	list_forEach(scene->chars,(void (*)(void*)) &rpg_drawCharacter);
+	list_forEach(scene->map->chars,(void (*)(void*)) &rpg_drawCharacter);
 }
 
 void rpg_setFocus(rpg_scene* scene,rpg_character* focus){
 	scene->focus=focus;
+	if(!list_contains(scene->map->chars,focus)){
+		list_insert(scene->map->chars,focus);
+	}
 }

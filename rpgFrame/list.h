@@ -17,4 +17,6 @@ genericList* list_create();
 
 void list_forEach(genericList*,void (*)(void*));
 
+int list_contains(genericList*, void*);
+
 #endif

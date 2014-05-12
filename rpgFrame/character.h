@@ -32,7 +32,7 @@ rpg_character* rpg_protagonist;
 
 rpg_character* rpg_createCharacter(char*);
 
-void rpg_setProtagonst(rpg_character*);
+void rpg_setProtagonist(rpg_character*);
 
 void rpg_drawCharacter(rpg_character*);
 

@@ -44,7 +44,6 @@ int rpg_mainloop(){
 				while(tmp_key!=NULL){
 					if(event.key.keysym.sym==tmp_key->key){
 						tmp_key->function();
-						break;
 					}
 					tmp_key=tmp_key->next;
 				}

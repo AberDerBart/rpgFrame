@@ -7,7 +7,6 @@
 
 typedef struct{
 	rpg_map* map;
-	genericList* chars;
 	rpg_character* focus;
 	int off_x;
 	int off_y;

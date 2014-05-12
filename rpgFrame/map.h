@@ -3,12 +3,14 @@
 
 #include "tile.h"
 #include "character.h"
+#include "list.h"
 
 typedef struct{
 	int height;
 	int width;
 	int layers;
 	rpg_tile* tiles;
+	genericList* chars;
 } rpg_map; 
 
 inline rpg_map* rpg_createMap(int,int,int);

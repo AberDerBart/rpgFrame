@@ -28,16 +28,16 @@ int main(){
 	}
 
 	scene.map=rpg_parseMap("testmap");
-	scene.chars=list_create();
+	scene.map->chars=list_create();
 
-	list_insert(scene.chars,rpg_createCharacter("img/sprites/char.png"));
-	rpg_protagonist=scene.chars->next->item;
+	list_insert(scene.map->chars,rpg_createCharacter("img/sprites/char.png"));
+	rpg_protagonist=scene.map->chars->next->item;
 	//list_insert(scene.chars,rpg_createCharacter("img/sprites/char.png"));
 	scene.focus=rpg_protagonist;
 	rpg_curScene=&scene;
 	
-	//rpg_protagonist->x=2;
-	//rpg_protagonist->y=2;
+	rpg_protagonist->x=2;
+	rpg_protagonist->y=2;
 
 	/*rect.x=25;
 	rect.y=300;

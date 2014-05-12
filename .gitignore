@@ -4,9 +4,11 @@ rpgFrame/*.o
 rpgFrame/librpgFrame.a
 testmap.png
 tiles.txt
-main.o
+*.o
+*.bmp
 *.swp
 rpgFrame/*.swp
 pokethulhu
+editor
 testmap/
 rpgFrame/editor

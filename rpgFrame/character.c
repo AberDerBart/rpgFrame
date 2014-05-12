@@ -72,7 +72,7 @@ int rpg_moveCharacter(rpg_character* character, rpg_direction direction){
 
 	mObject->c=character;
 	mObject->dir=direction;
-	mObject->speed=2.;
+	mObject->speed=3.;
 	mObject->startTime=SDL_GetTicks();
 	mObject->nextDir=D_NONE;
 	character->dir=direction;
@@ -84,6 +84,7 @@ int rpg_moveCharacter(rpg_character* character, rpg_direction direction){
 }
 
 void rpg_moveProtagonist(rpg_direction direction){
+	rpg_checkEvent_walkTo(direction);
 	if(rpg_protagonist){
 		rpg_moveCharacter(rpg_protagonist, direction);
 	}
@@ -121,4 +122,8 @@ collisionType checkCollision(rpg_character* chara,rpg_direction dir){
 		return tile->collision;
 	}
 	return -1;
+}
+
+void rpg_setProtagonist(rpg_character* prot){
+	rpg_protagonist=prot;
 }

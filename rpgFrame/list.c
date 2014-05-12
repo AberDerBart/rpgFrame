@@ -49,3 +49,13 @@ void list_forEach(genericList* list,void (*func)(void*)){
 	}
 }
 	
+int list_contains(genericList* list, void* element){
+	while(list){
+		if(list->item==element){
+			return 1;
+		}
+		list=list->next;
+	}
+	return 0;
+
+}
