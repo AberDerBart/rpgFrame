@@ -20,5 +20,7 @@ rpg_scene* rpg_curScene;
 int rpg_mainloop();
 void rpg_quit();
 void rpg_redraw();
+void rpg_freeze(int);
+long rpg_getGameTime();
 
 #endif

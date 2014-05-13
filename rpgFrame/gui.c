@@ -4,10 +4,21 @@
 #include <stdlib.h>
 
 void rpg_guiSelect(){
+	rpg_gui* nextGui;
+
 	if(currentGui){
 		if(currentGui->type==CHOICE){
-			currentGui->detail.choice.actions[currentGui->detail.choice.selectedAction].function();
+			if(currentGui->detail.choice.actions[currentGui->detail.choice.selectedAction].function!=NULL){
+				currentGui->detail.choice.actions[currentGui->detail.choice.selectedAction].function();
+			}
+			nextGui=currentGui->detail.choice.actions[currentGui->detail.choice.selectedAction].nextGui;
 		}
+		
+		if(currentGui->type==TEXT){
+			nextGui=currentGui->detail.text.nextGui;
+		}
+
+		rpg_setGui(nextGui);
 	}
 }
 
@@ -44,6 +55,11 @@ void rpg_drawGui(){
 
 void rpg_setGui(rpg_gui* gui){
 	currentGui=gui;
+	if(gui){
+		rpg_freeze(1);
+	}else{
+		rpg_freeze(0);
+	}
 }
 
 rpg_gui* rpg_createBasicGui(rpg_guiStyle* style,SDL_Rect rect){
@@ -69,6 +85,7 @@ rpg_gui* rpg_createTextGui(rpg_guiStyle* style,char* text,SDL_Rect rect){
 	gui->type=TEXT;
 	gui->rect=rect;
 	gui->detail.text.text=text;
+	gui->detail.text.nextGui=NULL;
 
 	gui->surface=TTF_RenderText_Solid(style->font,text,style->textColor);
 	gui->texture=NULL;
@@ -102,7 +119,7 @@ rpg_gui* rpg_createChoiceGui(rpg_guiStyle* style,rpg_action* actions,SDL_Rect re
 	gui->rect=rect;
 	gui->detail.choice.actions=actions;
 	gui->detail.choice.actionCount=actionCount;
-	gui->detail.choice.selectedAction=2;
+	gui->detail.choice.selectedAction=0;
 
 	gui->texture=NULL;
 	gui->texture=rpg_createGuiBG(gui);

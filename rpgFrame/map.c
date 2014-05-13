@@ -37,7 +37,7 @@ int rpg_drawMap(rpg_map* map){
 	int frameTime;
 	Uint32 curTime;
 
-	curTime=SDL_GetTicks();
+	curTime=rpg_getGameTime();
 
 	SDL_Rect rect;
 	SDL_Rect texRect;

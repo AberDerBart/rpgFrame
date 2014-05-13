@@ -7,6 +7,9 @@
 #include "events.h"
 
 int quit;
+int freeze;
+long timeOffset;
+long freezeTime;
 
 void moveObjects();
 
@@ -25,9 +28,8 @@ int rpg_mainloop(){
 	movementKeys[2]=SDLK_DOWN;
 	movementKeys[3]=SDLK_RIGHT;
 
-	rpg_bindKey(SDLK_ESCAPE,&rpg_quit);
-
 	quit=0;
+	freeze=0;
 
 	while(quit==0){
 		while(SDL_PollEvent(&event)){
@@ -36,9 +38,11 @@ int rpg_mainloop(){
 			}
 			if(event.type==SDL_KEYDOWN){
 				tmp_key=&keyListStart;
-				for(i=1;i<5;i++){ 
-					if(event.key.keysym.sym==movementKeys[i-1]){
-						startMovement(i);
+				if(!freeze){
+					for(i=1;i<5;i++){ 
+						if(event.key.keysym.sym==movementKeys[i-1]){
+							startMovement(i);
+						}
 					}
 				}
 				while(tmp_key!=NULL){
@@ -56,14 +60,34 @@ int rpg_mainloop(){
 				}
 			}
 		}
-		updatePlayerMovement();
-		moveObjects();
+		if(!freeze){
+			updatePlayerMovement();
+			moveObjects();
+		}
 		rpg_redraw();
 	}
 
 	return 0;
 }
 
+void rpg_freeze(int f){
+	if(f){
+		if(!freeze){
+			freezeTime=SDL_GetTicks();
+		}
+	}else{
+		if(freeze){
+			timeOffset+=(SDL_GetTicks()-freezeTime);
+		}
+	}
+
+	freeze=f;
+}
+
+long rpg_getGameTime(){
+	return SDL_GetTicks()-timeOffset;
+}
+	
 int moveObject(int time, movedObject* obj){
 	int step;
 
@@ -120,7 +144,7 @@ void moveObjects(){
 	genericList* list;
 	genericList* tmp;
 
-	time=SDL_GetTicks();
+	time=rpg_getGameTime();
 	list=movedObjectsList->next;
 
 	while(list){

@@ -55,36 +55,45 @@ typedef struct{
 	SDL_Color textColor;
 } rpg_guiStyle;
 
-typedef struct{
+/*typedef struct{
 	char* text;
-} rpg_guiText;
+	rpg_gui* nextGui;
+} rpg_guiText;*/
 
 typedef struct{
 	void (*function)();
 	char* text;
+	struct rpg_gui* nextGui;
 } rpg_action;
 
-typedef struct{
+/*typedef struct{
 	rpg_action* actions;
 	int actionCount;
 	int selectedAction;
-} rpg_guiChoice;
+} rpg_guiChoice;*/
 
-typedef struct{
+struct rpg_gui{
 	rpg_guiStyle* style;
 	rpg_guiType type;
 	SDL_Texture* texture;
 	SDL_Surface* surface;
 	SDL_Rect rect;
 	union{
-		rpg_guiText text;
-		rpg_guiChoice choice;
+		struct{
+			char* text;
+			struct rpg_gui* nextGui;
+		} text;
+		struct{
+			rpg_action* actions;
+			int actionCount;
+			int selectedAction;
+		} choice;
 	} detail;
-} rpg_gui;
+}; 
+
+typedef struct rpg_gui rpg_gui;
 
 rpg_gui* currentGui;
-
-typedef struct rpg_menu rpg_menu;
 
 void rpg_setGui(rpg_gui*);
 void rpg_drawGuiFrame(rpg_guiStyle*,SDL_Rect);

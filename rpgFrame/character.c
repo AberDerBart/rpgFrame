@@ -73,7 +73,7 @@ int rpg_moveCharacter(rpg_character* character, rpg_direction direction){
 	mObject->c=character;
 	mObject->dir=direction;
 	mObject->speed=3.;
-	mObject->startTime=SDL_GetTicks();
+	mObject->startTime=rpg_getGameTime();
 	mObject->nextDir=D_NONE;
 	character->dir=direction;
 
