@@ -16,6 +16,12 @@ int rpg_checkEvent_walkTo(rpg_direction dir){
 	eventId=tile->eventId;
 
 	if(eventId==0){
+		if(tile->occupant){
+			if(tile->occupant->event.walkTo){
+				tile->occupant->event.walkTo();
+				return 0;
+			}
+		}
 		return 0;
 	}else{
 		if(!rpg_curScene->map->events){

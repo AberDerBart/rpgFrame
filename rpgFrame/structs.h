@@ -52,6 +52,12 @@ struct rpg_map{
 
 typedef struct rpg_map rpg_map; 
 
+struct rpg_event{
+	void (*standOn)();
+	void (*walkTo)();
+};
+
+
 typedef enum{
 	D_NONE=0,
 	D_UP=1,
@@ -76,6 +82,7 @@ struct rpg_character{
 	rpg_direction dir;
 	struct rpg_tile* tile;
 	struct rpg_map* map;
+	struct rpg_event event;
 };
 
 typedef struct rpg_character rpg_character;
@@ -87,11 +94,6 @@ typedef struct{
 	Uint32 startTime;
 	rpg_character* c;
 } movedObject;
-
-struct rpg_event{
-	void (*standOn)();
-	void (*walkTo)();
-};
 
 typedef struct rpg_event rpg_event;
 
