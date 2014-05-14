@@ -1,13 +1,7 @@
 #ifndef LIST_H
 #define LIST_H
 
-struct genericList{
-	struct genericList* next;
-	void* item;
-	struct genericList* prev;
-};
-
-typedef struct genericList genericList;
+#include "structs.h"
 
 void list_insert(genericList*, void*);
 
@@ -17,6 +11,6 @@ genericList* list_create();
 
 void list_forEach(genericList*,void (*)(void*));
 
-int list_contains(genericList*, void*);
+genericList* list_contains(genericList*, void*);
 
 #endif

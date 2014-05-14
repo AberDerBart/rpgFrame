@@ -3,30 +3,8 @@
 
 #include <SDL2/SDL.h>
 #include "tile.h"
-
-typedef enum{
-	D_NONE=0,
-	D_UP=1,
-	D_LEFT=2,
-	D_DOWN=3,
-	D_RIGHT=4
-} rpg_direction;
-
-typedef enum{
-	NORMAL,
-	MOVING
-} rpg_characterState;
-
-typedef struct{
-	int x;
-	int y;
-	int step_x;
-	int step_y;
-	int sprite_frames;
-	SDL_Texture* texture;
-	rpg_characterState state;
-	rpg_direction dir;
-} rpg_character;
+#include "map.h"
+#include "structs.h"
 
 rpg_character* rpg_protagonist;
 

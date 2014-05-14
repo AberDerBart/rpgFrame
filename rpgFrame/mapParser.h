@@ -1,6 +1,7 @@
 #ifndef MAPPARSER_H
 #define MAPPARSER_H
 
+#include "structs.h"
 #include "map.h"
 
 int rpg_setTiletable(char*);

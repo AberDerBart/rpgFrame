@@ -78,6 +78,7 @@ struct rpg_gui{
 	SDL_Texture* texture;
 	SDL_Surface* surface;
 	SDL_Rect rect;
+	int destroyAfterUse;
 	union{
 		struct{
 			char* text;
@@ -93,9 +94,8 @@ struct rpg_gui{
 
 typedef struct rpg_gui rpg_gui;
 
-rpg_gui* currentGui;
-
 void rpg_setGui(rpg_gui*);
+rpg_gui* rpg_getGui();
 void rpg_drawGuiFrame(rpg_guiStyle*,SDL_Rect);
 void rpg_drawGuiSelFrame(rpg_guiStyle*,SDL_Rect);
 void rpg_drawGui();
@@ -106,6 +106,7 @@ rpg_gui* rpg_createChoiceGui(rpg_guiStyle*,rpg_action*,SDL_Rect,int);
 rpg_gui* rpg_createTextGui(rpg_guiStyle*,char*,SDL_Rect);
 rpg_gui* rpg_createBasicGui(rpg_guiStyle*,SDL_Rect);
 void rpg_redrawGui(rpg_gui*);
+void rpg_freeGui(rpg_gui*);
 
 void rpg_guiDown();
 void rpg_guiUp();

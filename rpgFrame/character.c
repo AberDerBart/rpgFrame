@@ -30,8 +30,46 @@ rpg_character* rpg_createCharacter(char* texPath){
 	character->sprite_frames=4;
 	character->state=NORMAL;
 	character->dir=D_DOWN;
+	character->tile=NULL;
 
 	return character;
+}
+
+void rpg_character_setPosition(rpg_character* chara,int x,int y){
+	rpg_tile* tile;
+
+	tile=chara->tile;
+
+	if(tile){
+		if(tile->occupant==chara){
+			tile->occupant=NULL;
+		}
+	}
+
+	chara->x=x;
+	chara->y=y;
+	
+	if(chara->map){
+		tile=rpg_getMapTile(chara->map,x,y,D_NONE);
+
+		if(tile){
+			tile->occupant=chara;
+		}
+
+		chara->tile=tile;
+	}
+	
+}
+
+void rpg_character_setMap(rpg_character* chara,rpg_map* map,int x,int y){
+	if(list_contains(map->chars,chara)){
+		list_removeItem(list_contains(map->chars,chara));
+	}
+	chara->map=map;
+	if(!list_contains(map->chars,chara)){
+		list_insert(map->chars,chara);
+	}
+	rpg_character_setPosition(chara,x,y);
 }
 
 void rpg_drawCharacter(rpg_character* character){
@@ -119,6 +157,9 @@ collisionType checkCollision(rpg_character* chara,rpg_direction dir){
 	tile=rpg_getMapTile(rpg_curScene->map,chara->x,chara->y,dir);
 
 	if(tile){
+		if(tile->occupant){
+			return 1;
+		}
 		return tile->collision;
 	}
 	return -1;

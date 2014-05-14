@@ -21,8 +21,6 @@ int rpg_mainloop(){
 
 	movedObjectsList=list_create();
 
-	//rpg_bindKey(SDLK_ESCAPE, &rpg_quit, NULL);
-
 	movementKeys[0]=SDLK_UP;
 	movementKeys[1]=SDLK_LEFT;
 	movementKeys[2]=SDLK_DOWN;

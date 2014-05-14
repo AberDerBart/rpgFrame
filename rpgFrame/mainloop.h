@@ -6,14 +6,6 @@
 #include "list.h"
 #include "scene.h"
 
-typedef struct{
-	rpg_direction dir;
-	rpg_direction nextDir;
-	double speed;
-	Uint32 startTime;
-	rpg_character* c;
-} movedObject;
-
 genericList* movedObjectsList;
 rpg_scene* rpg_curScene;
 

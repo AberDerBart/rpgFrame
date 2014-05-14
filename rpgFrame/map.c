@@ -13,6 +13,8 @@ rpg_map* rpg_createMap(int w, int h, int layers){
 	map->width=w;
 	map->layers=layers;
 	map->tiles=malloc(w*h*sizeof(rpg_tile));
+	map->events=NULL;
+	map->chars=list_create();
 
 	for(y=0;y<h;y++){
 		for(x=0;x<w;x++){
@@ -21,6 +23,7 @@ rpg_map* rpg_createMap(int w, int h, int layers){
 			map->tiles[w*y+x].eventId=0;
 			map->tiles[w*y+x].textures=malloc(layers*sizeof(rpg_tileTexture*));
 			map->tiles[w*y+x].rot=malloc(layers*sizeof(rpg_tileTextureRotation));
+			map->tiles[w*y+x].occupant=NULL;
 			for(i=0;i<layers;i++){
 				map->tiles[w*y+x].textures[i]=NULL;
 				map->tiles[w*y+x].rot[i]=R0;

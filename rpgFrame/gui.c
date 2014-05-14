@@ -3,6 +3,8 @@
 #include <SDL2/SDL_image.h>
 #include <stdlib.h>
 
+rpg_gui* currentGui;
+
 void rpg_guiSelect(){
 	rpg_gui* nextGui;
 
@@ -44,6 +46,17 @@ void rpg_guiDown(){
 	}
 }
 
+void rpg_freeGui(rpg_gui* gui){
+	if(gui->texture){
+		SDL_DestroyTexture(gui->texture);
+	}
+	if(gui->surface){
+		SDL_FreeSurface(gui->surface);
+	}
+
+	free(gui);
+}
+
 void rpg_drawGui(){
 	SDL_Rect rect;
 
@@ -54,12 +67,19 @@ void rpg_drawGui(){
 }
 
 void rpg_setGui(rpg_gui* gui){
-	currentGui=gui;
-	if(gui){
-		rpg_freeze(1);
-	}else{
+	if(gui==NULL){
 		rpg_freeze(0);
+	}else{
+		rpg_freeze(1);
 	}
+	if(currentGui && currentGui->destroyAfterUse){
+		rpg_freeGui(currentGui);
+	}
+	currentGui=gui;
+}
+
+rpg_gui* rpg_getGui(){
+	return currentGui;
 }
 
 rpg_gui* rpg_createBasicGui(rpg_guiStyle* style,SDL_Rect rect){
@@ -71,6 +91,7 @@ rpg_gui* rpg_createBasicGui(rpg_guiStyle* style,SDL_Rect rect){
 	gui->rect=rect;
 	gui->texture=NULL;
 	gui->texture=rpg_createGuiBG(gui);
+	gui->destroyAfterUse=1;
 
 	return gui;
 }
@@ -86,6 +107,7 @@ rpg_gui* rpg_createTextGui(rpg_guiStyle* style,char* text,SDL_Rect rect){
 	gui->rect=rect;
 	gui->detail.text.text=text;
 	gui->detail.text.nextGui=NULL;
+	gui->destroyAfterUse=1;
 
 	gui->surface=TTF_RenderText_Solid(style->font,text,style->textColor);
 	gui->texture=NULL;
@@ -120,6 +142,7 @@ rpg_gui* rpg_createChoiceGui(rpg_guiStyle* style,rpg_action* actions,SDL_Rect re
 	gui->detail.choice.actions=actions;
 	gui->detail.choice.actionCount=actionCount;
 	gui->detail.choice.selectedAction=0;
+	gui->destroyAfterUse=1;
 
 	gui->texture=NULL;
 	gui->texture=rpg_createGuiBG(gui);

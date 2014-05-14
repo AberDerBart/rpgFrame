@@ -19,17 +19,22 @@ void list_insert(genericList* list, void* item){
 void* list_removeItem(genericList* list){
 	genericList *prev,*next;
 	void* item;
-	item=list->item;
-	prev=list->prev;
-	next=list->next;
-	if(prev){
-		prev->next=next;
+	if(list){
+		item=list->item;
+		prev=list->prev;
+		next=list->next;
+		if(prev){
+			prev->next=next;
+		}
+		if(next){
+			next->prev=prev;
+		}
+		free(list);
+		return item;
 	}
-	if(next){
-		next->prev=prev;
+	else{
+		return NULL;
 	}
-	free(list);
-	return item;
 }
 
 genericList* list_create(){
@@ -49,13 +54,12 @@ void list_forEach(genericList* list,void (*func)(void*)){
 	}
 }
 	
-int list_contains(genericList* list, void* element){
+genericList* list_contains(genericList* list, void* element){
 	while(list){
 		if(list->item==element){
-			return 1;
+			return list;
 		}
 		list=list->next;
 	}
-	return 0;
-
+	return NULL;
 }

@@ -18,16 +18,21 @@ int rpg_checkEvent_walkTo(rpg_direction dir){
 	if(eventId==0){
 		return 0;
 	}else{
-		if(!rpg_events){
+		if(!rpg_curScene->map->events){
 			fprintf(stderr,"Could not parse Event: No eventlist\n");
 			return -1;
 		}
 		
-		if(!rpg_events[eventId].walkTo){
+		if(eventId > rpg_curScene->map->eventCount){
+			fprintf(stderr,"Could not parse Event: Not in Eventlist\n");
+			return -2;
+		}
+
+		if(!rpg_curScene->map->events[eventId].walkTo){
 			return 0;
 		}
 
-		rpg_events[eventId].walkTo();
+		rpg_curScene->map->events[eventId].walkTo();
 	}
 	return 0;
 }
@@ -44,16 +49,21 @@ int rpg_checkEvent_stand(){
 	if(eventId==0){
 		return 0;
 	}else{
-		if(!rpg_events){
+		if(!rpg_curScene->map->events){
 			fprintf(stderr,"Could not parse Event: No eventlist\n");
 			return -1;
 		}
 		
-		if(!rpg_events[eventId].standOn){
+		if(eventId > rpg_curScene->map->eventCount){
+			fprintf(stderr,"Could not parse Event: Not in Eventlist\n");
+			return -2;
+		}
+
+		if(!rpg_curScene->map->events[eventId].standOn){
 			return 0;
 		}
 
-		rpg_events[eventId].standOn();
+		rpg_curScene->map->events[eventId].standOn();
 	}
 	return 0;
 }

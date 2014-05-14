@@ -1,6 +1,7 @@
 #ifndef ALL_H
 #define ALL_H
 
+#include "structs.h"
 #include "character.h"
 #include "events.h"
 #include "globals.h"
