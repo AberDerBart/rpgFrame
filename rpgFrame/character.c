@@ -90,11 +90,13 @@ void rpg_drawCharacter(rpg_character* character){
 }
 	
 int rpg_moveCharacter(rpg_character* character, rpg_direction direction){
+	movedObject* mObject;
+	genericList* list;
+	rpg_tile* tile;
+
 	if(checkCollision(character,direction)!=NORMAL){
 		return 3;
 	}
-	movedObject* mObject;
-	genericList* list;
 
 	if(character->state==MOVING){
 		while(list->item!=character){
@@ -117,6 +119,13 @@ int rpg_moveCharacter(rpg_character* character, rpg_direction direction){
 
 	list_insert(movedObjectsList,mObject);
 	character->state=MOVING;
+
+	if(character->map){
+		tile=rpg_getMapTile(character->map,character->x,character->y,direction);
+		if(tile && tile->occupant==NULL){
+			tile->occupant=character;
+		}
+	}
 
 	return 0;
 }

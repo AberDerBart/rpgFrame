@@ -126,6 +126,15 @@ int moveObject(int time, movedObject* obj){
 	if(step<TILE_SIZE){
 		return 0;
 	}else{
+		if(obj->c->tile){
+			if(obj->c->tile->occupant==obj->c){
+				obj->c->tile->occupant=NULL;
+			}
+			if(obj->c->map){
+				obj->c->tile=rpg_getMapTile(obj->c->map,obj->c->x,obj->c->y,D_NONE);
+				obj->c->tile->occupant=obj->c;
+			}
+		}
 		if(obj->nextDir==D_NONE){
 			obj->c->state=NORMAL;
 			return 1;
