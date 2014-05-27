@@ -13,11 +13,6 @@ void event_2(){
 
 int main(){
 	rpg_scene scene;
-	/*rpg_events=malloc(2*sizeof(rpg_event));
-	rpg_eventCount=2;
-	rpg_events[1].standOn=&event_1;*/
-	//rpg_action* actions;
-	//SDL_Rect rect;
 
 	if(rpg_init()){
 		return -1;
@@ -30,14 +25,11 @@ int main(){
 	scene.map=rpg_parseMap("testmap");
 	scene.map->chars=list_create();
 
-	list_insert(scene.map->chars,rpg_createCharacter("img/sprites/char.png"));
-	rpg_protagonist=scene.map->chars->next->item;
-	//list_insert(scene.chars,rpg_createCharacter("img/sprites/char.png"));
+	rpg_protagonist=rpg_createCharacter("img/sprites/char.png");
+	rpg_character_setMap(rpg_protagonist,scene.map,2,2);
 	scene.focus=rpg_protagonist;
 	rpg_curScene=&scene;
 	
-	rpg_protagonist->x=2;
-	rpg_protagonist->y=2;
 
 	/*rect.x=25;
 	rect.y=300;

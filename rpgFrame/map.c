@@ -83,9 +83,9 @@ rpg_tile* rpg_getMapTile(rpg_map* map,int x,int y,rpg_direction dir){
 	}else if(dir==D_DOWN){
 		y++;
 	}
-	if(x<0 || y<0 || x>=map->width || y>=map->height){
-		return NULL;
-	}else{
+	if(map!=NULL && x>=0 && y>=0 && x<map->width && y<map->height){
 		return map->tiles+x+y*map->width;
+	}else{
+		return NULL;
 	}
 }

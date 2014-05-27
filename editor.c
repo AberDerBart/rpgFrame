@@ -81,7 +81,7 @@ void redrawTilesMenu(){
 }
 
 void tilesRight(){
-if(currentGui==tilesGui){
+if(rpg_getGui()==tilesGui){
 	selectedTile++;
 	if(selectedTile>tileTypes){
 		selectedTile=0;
@@ -91,7 +91,7 @@ if(currentGui==tilesGui){
 }
 
 void tilesLeft(){
-	if(currentGui==tilesGui){
+	if(rpg_getGui()==tilesGui){
 		selectedTile--;
 		if(selectedTile<0){
 			selectedTile=tileTypes;
@@ -101,7 +101,7 @@ void tilesLeft(){
 }	
 
 void tilesDown(){
-	if(currentGui==tilesGui){
+	if(rpg_getGui()==tilesGui){
 		selectedTile+=8;
 		if(selectedTile>tileTypes){
 			selectedTile=0;
@@ -111,7 +111,7 @@ void tilesDown(){
 }
 
 void tilesUp(){
-	if(currentGui==tilesGui){
+	if(rpg_getGui()==tilesGui){
 		selectedTile-=8;
 		if(selectedTile<0){
 			selectedTile=tileTypes;
@@ -296,12 +296,10 @@ int main(int argc,char** argv){
 		baseSurf=SDL_CreateRGBSurface(0,10,10,32,0x00ff0000,0x0000ff00,0x000000ff,0xff000000);
 	}
 
-	scene.map->chars=list_create();
 	rpg_curScene=&scene;
-	list_insert(scene.map->chars,rpg_createCharacter("img/sprites/crosshair.png"));
-	//list_insert(scene.map->chars,rpg_createCharacter("img/sprites/char.png"));
-	scene.focus=scene.map->chars->next->item;
-	rpg_protagonist=scene.focus;
+	rpg_protagonist=rpg_createCharacter("img/sprites/crosshair.png");
+	rpg_character_setMap(rpg_protagonist,scene.map,0,0);
+	scene.focus=rpg_protagonist;
 
 	rpg_mainloop();
 

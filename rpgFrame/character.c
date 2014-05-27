@@ -31,6 +31,8 @@ rpg_character* rpg_createCharacter(char* texPath){
 	character->state=NORMAL;
 	character->dir=D_DOWN;
 	character->tile=NULL;
+	character->event.walkTo=NULL;
+	character->event.standOn=NULL;
 
 	return character;
 }
